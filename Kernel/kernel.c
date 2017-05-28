@@ -4,7 +4,7 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <interruptions.h>
-
+#include <asciicode.h>
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -13,6 +13,7 @@ extern uint8_t endOfKernelBinary;
 extern uint8_t endOfKernel;
 
 static const uint64_t PageSize = 0x1000;
+extern unsigned int readk();
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
@@ -81,7 +82,6 @@ void * initializeKernelBinary()
 	return getStackBase();
 }
 
-static int i = 0;
 char *video = (char *) 0xB8000;
 
 void tickHandler() {
@@ -89,7 +89,9 @@ void tickHandler() {
 }
 
 void keyboardHandler() {
-	video[i++] = i;
+	int a= readk();
+	a=ASCII_VALUE[a];
+	ncPrintChar(a);
 }
 
 void sti();
@@ -121,7 +123,7 @@ int main()
 		while(k < 1000*1000*20) {
 			k++;
 		}
-		ncPrintHex(i);
+		
 	}
 
 

@@ -3,7 +3,7 @@ GLOBAL sti
 GLOBAL setPicMaster
 GLOBAL irq0Handler
 GLOBAL irq1Handler
-
+GLOBAL readk
 EXTERN irqDispatcher
 
 %include "./asm/macros.m"
@@ -52,4 +52,10 @@ cpuVendor:
 
 	mov rsp, rbp
 	pop rbp
+	ret
+
+
+
+readk:
+	in al,60h
 	ret
