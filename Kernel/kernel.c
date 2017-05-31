@@ -4,7 +4,9 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <interruptions.h>
-#include <asciicode.h>
+#include "include/types.h"
+#include "include/system_calls.h"
+
 extern uint8_t text;
 extern uint8_t rodata;
 extern uint8_t data;
@@ -84,40 +86,14 @@ void * initializeKernelBinary()
 
 char *video = (char *) 0xB8000;
 
-void tickHandler() {
-	// video[i++] = i;	
-}
 
-void keyboardHandler() {
-	int a= readk();
-	a=ASCII_VALUE[a];
-	ncPrintChar(a);
-}
-
-void sti();
-void irq0Handler();
-void irq1Handler();
-void setPicMaster(uint16_t);
-
-typedef void (*handler_t)(void);
-
-handler_t handlers[] = {tickHandler,
-												keyboardHandler
-											 };
-
-void irqDispatcher(int irq) {
-	handlers[irq]();
-}
 
 int main()
 {	
-	interruptSetHandler(0x20, (uint64_t) irq0Handler);
-	interruptSetHandler(0x21, (uint64_t) irq1Handler);
-	
-	setPicMaster(0xFC);
-	
-	sti();
+	set_up_IDT();
+	set_up_system_calls();
 
+	/*
 	while(1) {
 		int k = 0;
 		while(k < 1000*1000*20) {
@@ -125,10 +101,12 @@ int main()
 		}
 		
 	}
+	*/
 
-
-	/* Aca voy a la parte de UserLand */
+	/* Execute UserLand, sampleCodeModule */
 	//ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+	
+	((EntryPoint)sampleCodeModuleAddress)();
 
 	return 0;
 }
