@@ -1,6 +1,5 @@
 //interruptions.c
 #include <interruptions.h>
-#include <asciicode.h>
 #include "include/types.h"
 
 #pragma pack(push)
@@ -22,11 +21,7 @@ void tickHandler() {
 	// video[i++] = i;	
 }
 
-void keyboardHandler() {
-	int a= readk();
-	a=ASCII_VALUE[a];
-	ncPrintChar(a);
-}
+
 
 typedef void (*handler_t)(void);
 

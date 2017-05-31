@@ -38,18 +38,6 @@
 *.dSYM/
 *.su
 
-.idea/Arqui2016.iml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
-CMakeLists.txt
-Kernel/TimerTick.o
-Kernel/asm/software_interrupt.o
-Kernel/asm/timerTick.o
-Kernel/keyboardDriver.o
-Kernel/syscall.o
 
 
-/Image/
-/Toolchain/
+

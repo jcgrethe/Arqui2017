@@ -4,6 +4,7 @@
 #include <moduleLoader.h>
 #include <naiveConsole.h>
 #include <interruptions.h>
+#include <KeyboardDriver.h>
 #include "include/types.h"
 #include "include/system_calls.h"
 
