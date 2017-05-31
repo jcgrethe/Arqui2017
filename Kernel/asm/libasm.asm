@@ -3,7 +3,10 @@ GLOBAL sti
 GLOBAL setPicMaster
 GLOBAL irq0Handler
 GLOBAL irq1Handler
+GLOBAL irq80Handler
 GLOBAL readk
+
+EXTERN syscallHandler
 EXTERN irqDispatcher
 
 %include "./asm/macros.m"
@@ -15,6 +18,16 @@ irq0Handler:
 	
 irq1Handler:
 	irqHandler 1
+
+irq80Handler:
+
+	call syscallHandler
+
+	mov al, 20h
+	out 20h, al
+
+	iretq
+
 
 sti:
 	sti

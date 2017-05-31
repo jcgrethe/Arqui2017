@@ -1,9 +1,19 @@
 #ifndef _INTERRUPTIONS_H_
 #define _INTERRUPTIONS_H_
 
-#include <stdint.h>
+#include "types.h"
 
-void interruptSetHandler(int index, uint64_t handler);
+void sti();
+void irq0Handler();
+void irq1Handler();
+void setPicMaster(word);
 
+void tickHandler();
+void keyboardHandler();
+void irqDispatcher(int irq);
+
+void interruption_set_handler(int index, qword handler);
+
+void irq80Handler(void);
 
 #endif
