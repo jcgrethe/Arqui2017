@@ -7,10 +7,9 @@ void initShell() {
   printf("Shell: ");
 
   char c;
-
   while(1) {
     if ((c = getc()) != EOF) {
-      printf(c);
+      printC(c);
     }
     //Wait for inputs
   }

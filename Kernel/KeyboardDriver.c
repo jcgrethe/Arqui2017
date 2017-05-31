@@ -1,12 +1,12 @@
 #include <asciicode.h>
 #include "include/KeyboardDriver.h"
 #include "include/types.h"
-
+#include <system_calls.h>
 #define BUFFER_SIZE 150
 
 static byte buffer[BUFFER_SIZE];
-static char index=0;
-static char bufferindex=0;
+static int index=0;
+static int bufferindex=0;
 static boolean ctrl=false;
 static boolean caps=false;
 static boolean shift=false;
@@ -74,13 +74,13 @@ byte getBuffer(){
 
 void readAllBuffer(char* buff, int size){
     int i = 0;
-    int c;
+    char c;
 
     while (i < size - 1 && (c = getBuffer()) != EOF) {
         buff[i] = (char) c;
         i++;
     }
-
     buff[i] = 0;
+    
 }
 

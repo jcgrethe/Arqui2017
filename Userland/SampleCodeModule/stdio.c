@@ -13,13 +13,12 @@ void clearScreen() {
 }
 
 void printC(const char c) {
-	int80(1, 1, c, 1, 0, 0);
+	int80(1, 0, &c, 1, 0, 0);
 }
 
-int getc() {
+char getc() {
 	char a[2];
 	int80(3,0,a,2,0,0);
-	if(*a == EOF) return EOF;
-	printC(a[0]);
-	return *a;
+	if(a[0] == 0 ) return EOF;
+	return a[0];
 }
