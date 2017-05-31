@@ -3,4 +3,8 @@
 
 void printf(const char* str);
 
+void clearScreen();
+
+int getc();
+
 #endif
