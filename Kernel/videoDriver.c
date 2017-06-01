@@ -17,8 +17,21 @@ void printString(const char * string) {
 }
 
 void printChar(char character) {
-	*currentVideo = character;
-	currentVideo += 2;
+	if(c=='\b') {
+		backspace();
+	}else if(c=='\n') {
+		newline();
+	}else {
+		*currentVideo = character;
+		currentVideo += 2;
+	}
+}
+
+void backspace() {
+	if (*currenVideo > 0xB8000) {
+		currentVideo -= 2;
+	}
+	printChar(' ');
 }
 
 void newline() {
@@ -80,3 +93,4 @@ static dword uintToBase(qword value, char * buffer, dword base) {
 
 	return digits;
 }
+
