@@ -1,10 +1,12 @@
 #include <asciicode.h>
-#include <KeyboardDriver.h>
+#include "include/KeyboardDriver.h"
 #include "include/types.h"
-#define size 150
-static byte buffer[size];
-static char index=0;
-static char bufferindex=0;
+#include <system_calls.h>
+#define BUFFER_SIZE 150
+
+static byte buffer[BUFFER_SIZE];
+static int index=0;
+static int bufferindex=0;
 static boolean ctrl=false;
 static boolean caps=false;
 static boolean shift=false;
@@ -58,17 +60,27 @@ void keyboardHandler() {
 		}
 	}
 	buffer[bufferindex]=key;
-	bufferindex=(bufferindex+1)%size;	
+	bufferindex=(bufferindex+1)%BUFFER_SIZE;
 }
-
-
 
 byte getBuffer(){
 	if(index<bufferindex){
 		byte aux=buffer[index];
-		index=(index+1)%size;
+		index=(index+1)%BUFFER_SIZE;
 		return aux;
 	}
 	return EOF;
+}
+
+void readAllBuffer(char* buff, int size){
+    int i = 0;
+    char c;
+
+    while (i < size - 1 && (c = getBuffer()) != EOF) {
+        buff[i] = (char) c;
+        i++;
+    }
+    buff[i] = 0;
+    
 }
 

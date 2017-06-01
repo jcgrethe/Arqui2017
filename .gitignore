@@ -38,6 +38,12 @@
 *.dSYM/
 *.su
 
+#Binary Files
+*.bin
+*.sys
 
-
+#The images
+Image/*.img
+Image/*.qcow2
+Image/*.vmdk
 
