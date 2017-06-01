@@ -43,7 +43,7 @@
 *.sys
 
 #The images
-*.img
-*.qcow2
-*.vmdk
+Image/*.img
+Image/*.qcow2
+Image/*.vmdk
 
