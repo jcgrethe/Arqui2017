@@ -22,3 +22,29 @@ char getc() {
 	if(a[0] == 0 ) return EOF;
 	return a[0];
 }
+
+void backspace(char c) {
+	int80(1, 0 , &c, 1 ,0, 0);
+}
+
+void newLine(char c){
+	int80(1, 0 , &c, 1 ,0, 0);
+}
+
+
+boolean strcmp(char* s1,char* s2){
+	int x=0;
+	boolean flag=true;
+	while(s1[x]!=0 && s2[x]!=0 && flag==true){
+		if(s1[x]!=s2[x]){
+			flag=false;
+		}
+		x++;
+	}
+	if(flag==false)
+		return flag;
+	if(s1[x]==s2[x]){
+		return true;
+	}
+	return false;
+}

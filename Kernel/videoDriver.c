@@ -16,22 +16,26 @@ void printString(const char * string) {
 		printChar(string[i]);
 }
 
-void printChar(char character) {
+void printChar(char c) {
 	if(c=='\b') {
 		backspace();
 	}else if(c=='\n') {
 		newline();
 	}else {
-		*currentVideo = character;
+		*currentVideo = c;
 		currentVideo += 2;
 	}
 }
 
 void backspace() {
-	if (*currenVideo > 0xB8000) {
+	if (currentVideo > 0xB8000) {
 		currentVideo -= 2;
+		printChar(' ');
+		currentVideo -= 2;
+
 	}
-	printChar(' ');
+	
+
 }
 
 void newline() {

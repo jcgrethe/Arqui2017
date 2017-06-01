@@ -2,7 +2,7 @@
 #include "include/KeyboardDriver.h"
 #include "include/types.h"
 #include <system_calls.h>
-#define BUFFER_SIZE 150
+#define BUFFER_SIZE 20
 
 static byte buffer[BUFFER_SIZE];
 static int index=0;
@@ -64,7 +64,7 @@ void keyboardHandler() {
 }
 
 byte getBuffer(){
-	if(index<bufferindex){
+	if(index!=bufferindex){
 		byte aux=buffer[index];
 		index=(index+1)%BUFFER_SIZE;
 		return aux;
