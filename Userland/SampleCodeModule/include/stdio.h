@@ -11,8 +11,4 @@ char getc();
 void backspace() ;
 void newLine();
 
-
-void printDec(qword value);
-void printBase(qword value, dword base);
-static dword uintToBase(qword value, char * buffer, dword base) ;
 #endif
