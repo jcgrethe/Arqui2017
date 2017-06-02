@@ -4,7 +4,7 @@ void initShell() {
 
   clearScreen();
   printf("Shell: ");
-  printf("\n");
+  newLine();
   char buffer[100];
   int index=0;
   char c;
@@ -14,13 +14,17 @@ void initShell() {
     	if(c=='\b'){
     		index--;
     		buffer[index]=0;
-    		backspace(c);
+    		backspace();
     	}
       	else{
       		if(c=='\n'){
-      			newLine(c);
+      			newLine();
       			buffer[index]=0;
       			state=callfunction(buffer);
+				if(state!=0){
+					printf("Unknown command.");
+					newLine();
+				}
 				index=0;
 				buffer[0]=0;
       		}else{
@@ -45,10 +49,19 @@ int callfunction(char* buffer){
 			return 1;
 	}
 	function[x]=0;
-	if(strcmp(function,"echo")==true){
-		printf(buffer+x);
-		newLine('\n');
-
-	}
+	if(strcmp(function,"echo")){
+		echo(buffer+x);
 		return 0;
+	}
+	return 1;
+		
+}
+
+
+
+
+void echo(char * buffer){
+	printf(buffer);
+	newLine();
+
 }

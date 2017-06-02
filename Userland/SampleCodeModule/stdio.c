@@ -24,11 +24,13 @@ char getc() {
 	return a[0];
 }
 
-void backspace(char c) {
+void backspace() {
+	char c='\b';
 	int80(1, 0 , &c, 1 ,0, 0);
 }
 
-void newLine(char c){
+void newLine(){
+	char c='\n';
 	int80(1, 0 , &c, 1 ,0, 0);
 }
 

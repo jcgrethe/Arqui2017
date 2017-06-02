@@ -8,6 +8,6 @@ void printf(const char* str);
 void clearScreen();
 boolean strcmp(char* s1,char* s2);
 char getc();
-void backspace(char c) ;
-void newLine(char c);
+void backspace() ;
+void newLine();
 #endif
