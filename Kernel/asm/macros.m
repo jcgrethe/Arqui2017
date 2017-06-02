@@ -51,3 +51,9 @@
 
 	iretq
 %endmacro
+
+%macro pushStack 0
+	push rbp
+    mov rbp,rsp
+%endmacro
+

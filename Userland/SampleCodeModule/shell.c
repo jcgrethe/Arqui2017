@@ -53,12 +53,18 @@ int callfunction(char* buffer){
 		echo(buffer+x);
 		return 0;
 	}
+	if(strcmp(function,"getTime")){
+		char min;
+		char hour;
+		char day;
+		char month;
+		char year;
+		time(&min,&hour,&day,&month,&year);
+		return 0;
+	}
 	return 1;
 		
 }
-
-
-
 
 void echo(char * buffer){
 	printf(buffer);

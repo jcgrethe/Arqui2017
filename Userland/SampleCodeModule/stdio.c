@@ -14,7 +14,7 @@ void clearScreen() {
 }
 
 void printC(const char c) {
-	int80(1, 0, &c, 1, 0, 0);
+	int80(1, 1, &c, 1, 0, 0);
 }
 
 char getc() {
@@ -51,3 +51,12 @@ boolean strcmp(char* s1,char* s2){
 	}
 	return false;
 }
+
+void time(char* m,char* h,char* d,char* mo,char* y){
+	int80(4,m,h,d,mo,y);
+	//printC(*m);printf(":");printC(*h);printf(" ");printC(*d);printf("/");printC(*mo);printf("/");printC(*y);
+	newLine();
+}
+
+
+
