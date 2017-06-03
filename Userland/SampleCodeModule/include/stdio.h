@@ -6,9 +6,9 @@
 void printf(const char* str);
 void time(char* m,char* h,char* d,char* mo,char* y);
 void clearScreen();
-boolean strcmp(char* s1,char* s2);
-char getc();
+char getchar();
 void backspace() ;
 void newLine();
+void putchar(char a);
 
 #endif

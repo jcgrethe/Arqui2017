@@ -10,7 +10,7 @@ void initShell() {
   char c;
   int state;
   while(1) {
-    if ((c = getc()) != EOF) {
+    if ((c = getchar()) != EOF) {
     	if(c=='\b'){
     		index--;
     		buffer[index]=0;
@@ -31,7 +31,7 @@ void initShell() {
 	      		buffer[index]=c;
 	      		index++;
 	      		buffer[index]=0;
-	     		printf(&(buffer[index-1]) );
+	     		putchar(buffer[index-1]);
 	      		
 	  		}	   
 	  	}
