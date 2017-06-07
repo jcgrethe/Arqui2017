@@ -53,17 +53,20 @@ int callfunction(char* buffer) {
 	}
 	function[x]=0;
 	if(strcmp(function, "echo")) {
-		echo(buffer+x);
+		echo(buffer+x+1);
 		return 0;
 	}
 	if(strcmp(function, "getTime")) {
 		printTimeAndDate();
 		return 0;
 	}
+	if(strcmp(function, "fontColor")) {
+		return changeFontColor(buffer+x+1);
+	}
 	return 1;
 }
 
 void echo(char * buffer){
-	printf(++buffer);
+	printf(buffer);
 	newLine();
 }

@@ -42,6 +42,9 @@ qword sys_time(qword min, qword hour, qword day, qword month, qword year) {
     return 1;
 }
 
+qword sys_fontColor(qword color, qword rdx, qword rcx, qword r8, qword r9) {
+    changeFontColor(color);
+}
 
 void set_up_system_calls(){
  
@@ -49,6 +52,8 @@ void set_up_system_calls(){
   sysCalls[2] = &sys_clear;
   sysCalls[3] = &sys_read;
   sysCalls[4] = &sys_time;
+  sysCalls[5] = &sys_fontColor;
+
  
   interruption_set_handler(0x80, (qword)&irq80Handler); //Softwrae interrupts starts after 0x80
 }

@@ -6,6 +6,7 @@ static dword uintToBase(qword value, char * buffer, dword base);
 static char buffer[64] = { '0' };
 static byte * const video = (byte*)0xB8000;
 static byte * currentVideo = (byte*)0xB8000;
+static byte fontColor = 0xF;
 static const dword width = 80;
 static const dword height = 25 ;
 
@@ -16,14 +17,31 @@ void printString(const char * string) {
 		printChar(string[i]);
 }
 
+void changeFontColor(char newColor) {
+	fontColor = newColor;
+}
+
 void printChar(char c) {
+	if (currentVideo >= (0xB8000 + 80*2*25)) {
+		scrollDown();
+		currentVideo = 0xB8000 + 80*2*24;
+	}
 	if(c=='\b') {
 		backspace();
-	}else if(c=='\n') {
+	} else if(c=='\n') {
 		newline();
-	}else {
+	} else {
 		*currentVideo = c;
-		currentVideo += 2;
+		currentVideo ++;
+		*currentVideo = fontColor;
+		currentVideo ++;
+	}
+}
+
+void scrollDown() {
+	int i;
+	for (i = 0; i < 25; i++) {
+		memcpy(video + i*80*2, video + (i + 1)*80*2, 80*2);
 	}
 }
 
@@ -32,10 +50,7 @@ void backspace() {
 		currentVideo -= 2;
 		printChar(' ');
 		currentVideo -= 2;
-
 	}
-	
-
 }
 
 void newline() {

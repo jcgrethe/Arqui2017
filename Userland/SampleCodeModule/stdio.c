@@ -95,5 +95,21 @@ void time(char* m,char* h,char* d,char* mo,char* y) {
 	int80(4, m, h, d, mo, y);
 }
 
+int changeFontColor(char* color) {
+	if(strcmp(color, "blue")) {
+		int80(5, 1, 0, 0, 0, 0);
+	} else if(strcmp(color, "red")) {
+		int80(5, 4, 0, 0, 0, 0);
+	} else if(strcmp(color, "violet")) {
+		int80(5, 5, 0, 0, 0, 0);
+	} else if(strcmp(color, "yellow")) {
+		int80(5, 0xE, 0, 0, 0, 0);
+	} else if(strcmp(color, "white")) {
+		int80(5, 0xF, 0, 0, 0, 0);
+	} else {
+		return 1;
+	}
+	return 0;
+}
 
 
