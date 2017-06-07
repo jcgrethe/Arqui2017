@@ -4,7 +4,6 @@
 #include <stdarg.h>
 extern void int80(qword rdi, qword rsi, qword rdx, qword rcx, qword r8, qword r9);
 
-
 //https://www.tutorialspoint.com/cprogramming/c_variable_arguments.htm y ayuda de augusto
 void printf(const char * str,...){
 	char num[12];
@@ -30,6 +29,10 @@ void printf(const char * str,...){
 				case 'c':
 					putchar((char)(va_arg(arguments,int)));
 					state=0;
+					break;
+				case 's':
+					printf(va_arg(arguments, int));
+					state = 0;
 					break;
 				default:	
 					putchar('%');
@@ -88,12 +91,8 @@ void intostr(int num,char * ret){
 	ret[dig]=0;
 }
 
-
-
-void time(char* m,char* h,char* d,char* mo,char* y){
-	int80(4,m,h,d,mo,y);
-	//printC(*m);printf(":");printC(*h);printf(" ");printC(*d);printf("/");printC(*mo);printf("/");printC(*y);
-	newLine();
+void time(char* m,char* h,char* d,char* mo,char* y) {
+	int80(4, m, h, d, mo, y);
 }
 
 

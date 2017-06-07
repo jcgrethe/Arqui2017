@@ -28,18 +28,17 @@ qword sys_read(qword file, qword buffer, qword size, qword r8, qword r9) {
     return 1;
 }
 qword sys_time(qword min, qword hour, qword day, qword month, qword year) {
-    char *m=(char *) min;
-    char *h=(char *) hour;
-    char *d=(char *) day;
-    char *mo=(char *) month;
-    char *y=(char *) year;
+    char *m = (char *) min;
+    char *h = (char *) hour;
+    char *d = (char *) day;
+    char *mo = (char *) month;
+    char *y = (char *) year;
     binaryTime();
-    *m=getMin();
-    *h=getHour();
-    *d=getDay();
-    *mo=getMonth();
-    *y=getYear();
-    printDec(*m);printString(":");printDec(*h);printString(" ");printDec(*d);printString("/");printDec(*mo);printString("/");printDec(*y);
+    *m = getMin();
+    *h = getHour();
+    *d = getDay();
+    *mo = getMonth();
+    *y = getYear();
     return 1;
 }
 

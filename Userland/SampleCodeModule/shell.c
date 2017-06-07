@@ -1,5 +1,7 @@
 #include "./types.h"
 #include "include/stdio.h"
+#include "include/timeAndDate.h"
+
 void initShell() {
 
   clearScreen();
@@ -31,47 +33,35 @@ void initShell() {
 	      		buffer[index]=c;
 	      		index++;
 	      		buffer[index]=0;
-	     		putchar(buffer[index-1]);
-	      		
+	     		putchar(buffer[index-1]);	
 	  		}	   
 	  	}
-	 }
+		}
 	}
 }
 
-
-
-
-
-int callfunction(char* buffer){
+int callfunction(char* buffer) {
 	int x=0;
 	char function[10];
-	while(buffer[x]!=' ' && buffer[x]!=0){
+	while(buffer[x]!=' ' && buffer[x]!=0) {
 		function[x]=buffer[x];
 		x++;
 		if(x>9)
 			return 1;
 	}
 	function[x]=0;
-	if(strcmp(function,"echo")){
+	if(strcmp(function, "echo")) {
 		echo(buffer+x);
 		return 0;
 	}
-	if(strcmp(function,"getTime")){
-		char min;
-		char hour;
-		char day;
-		char month;
-		char year;
-		time(&min,&hour,&day,&month,&year);
+	if(strcmp(function, "getTime")) {
+		printTimeAndDate();
 		return 0;
 	}
 	return 1;
-		
 }
 
 void echo(char * buffer){
 	printf(buffer);
 	newLine();
-
 }
