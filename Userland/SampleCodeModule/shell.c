@@ -14,9 +14,11 @@ void initShell() {
   while(1) {
     if ((c = getchar()) != EOF) {
     	if(c=='\b'){
-    		index--;
-    		buffer[index]=0;
-    		backspace();
+    		if(index!=0){
+    			index--;
+    			buffer[index]=0;
+    			backspace();
+    		}
     	}
       	else{
       		if(c=='\n'){
@@ -62,6 +64,6 @@ int callfunction(char* buffer) {
 }
 
 void echo(char * buffer){
-	printf(buffer);
+	printf(++buffer);
 	newLine();
 }
