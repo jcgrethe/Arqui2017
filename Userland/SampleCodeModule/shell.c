@@ -3,7 +3,7 @@
 void initShell() {
 
   clearScreen();
-  printf("Shell: ",0);
+  printf("Shell: ");
   newLine();
   char buffer[100];
   int index=0;
@@ -22,7 +22,7 @@ void initShell() {
       			buffer[index]=0;
       			state=callfunction(buffer);
 				if(state!=0){
-					printf("Unknown command.%c",0);
+					printf("Unknown command.");
 					newLine();
 				}
 				index=0;
@@ -38,6 +38,10 @@ void initShell() {
 	 }
 	}
 }
+
+
+
+
 
 int callfunction(char* buffer){
 	int x=0;
@@ -67,7 +71,7 @@ int callfunction(char* buffer){
 }
 
 void echo(char * buffer){
-	printf(buffer,0);
+	printf(buffer);
 	newLine();
 
 }

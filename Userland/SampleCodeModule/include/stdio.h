@@ -3,7 +3,7 @@
 
 #include "../types.h"
 void intostr(int num,char*a);
-void printf(const char* str,int n,...);
+void printf(const char* str,...);
 void time(char* m,char* h,char* d,char* mo,char* y);
 void clearScreen();
 char getchar();

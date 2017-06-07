@@ -13,10 +13,10 @@ extern void int80(qword rdi, qword rsi, qword rdx, qword rcx, qword r8, qword r9
 
 
 //https://www.tutorialspoint.com/cprogramming/c_variable_arguments.htm
-void printf(const char * str,int n,...){
+void printf(const char * str,...){
 	char num[12];
 	va_list arguments;
-	va_start ( arguments, n);
+	va_start ( arguments,str);
 	int length=strlen(str);
 	int state=0;
 	for(int x=0;x<length;x++){
