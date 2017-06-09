@@ -16,7 +16,7 @@ static boolean rshift=false;
 
 void keyboardHandler() {
 	byte aux;
-	byte key= readk();
+	byte key= read();
 	 if (key == 0x1D || key==0X9D) {
         ctrl = !ctrl; 
         return;

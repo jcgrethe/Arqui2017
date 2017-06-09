@@ -25,7 +25,7 @@ void tickHandler() {
 
 typedef void (*handler_t)(void);
 
-handler_t handlers[] = {tickHandler, keyboardHandler};
+handler_t handlers[] = {tickHandler, keyboardHandler, mouseHandler};
 
 void irqDispatcher(int irq) {
 	handlers[irq]();
@@ -47,11 +47,14 @@ void interruption_set_handler(int index, qword handler) {
 }
 
 void set_up_IDT() {
+	cli();
 
 	interruption_set_handler(0x20, (qword) irq0Handler);
 	interruption_set_handler(0x21, (qword) irq1Handler);
+	interruption_set_handler(0x2C, (qword) irq2Handler);
 
-	setPicMaster(0xFC);
+	setPicMaster(0xF8);
+	setPicSlave(0xEF);
 	
 	sti();
 }
