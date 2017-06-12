@@ -63,6 +63,11 @@ int callfunction(char* buffer) {
 	if(strcmp(function, "fontColor")) {
 		return changeFontColor(buffer+x+1);
 	}
+	if(strcmp(function, "clear")) {
+		 clearScreen();
+		 return 0;
+	}
+
 	return 1;
 }
 

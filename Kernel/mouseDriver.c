@@ -6,7 +6,8 @@
 
 //info: http://houbysoft.com/download/ps2mouse.html
 
-
+static byte x = 10;
+static byte y = 15;
 extern dword read();
 
 void set_up_mouse(){
@@ -33,6 +34,7 @@ void set_up_mouse(){
 
 	mWrite(0xF4);
 	mRead();
+	
 }
 
 byte mRead(){
@@ -74,9 +76,7 @@ void mWait(byte t){
 }
 
 void mouseHandler(){
-    static int x = 0;
-    static int y = 0;
-
+    
     static byte cycle = 0;
     static char mouse_bytes[3];
     mouse_bytes[cycle++] = read();
@@ -84,28 +84,30 @@ void mouseHandler(){
     if (cycle == 3) { // if we have all the 3 bytes...
         cycle = 0; // reset the counter
     // do what you wish with the bytes, this is just a sample
-    if ((mouse_bytes[0] & 0x80) || (mouse_bytes[0] & 0x40))
-        return; // the mouse only sends information about overflowing, do not care about it and return
-    if (!(mouse_bytes[0] & 0x20)){
-        printString("delta-y es negativo");
-        y -= mouse_bytes[2];
-    }else{
-        printString("delta-y es positivo");
-        y += mouse_bytes[2];
-    }
-    if (!(mouse_bytes[0] & 0x10)){
-        printString("delta-x es negativo");
-        x -= mouse_bytes[1];
-    }else{
-        printString("delta-x es positivo");
-        x += mouse_bytes[1];
-    }
-    if (mouse_bytes[0] & 0x4)
-        printString("Middle button is pressed!n");
-    if (mouse_bytes[0] & 0x2)
-        printString("Right button is pressed!n");
-    if (mouse_bytes[0] & 0x1)
-        printString("Left button is pressed!n");
+		if ((mouse_bytes[0] & 0x80) || (mouse_bytes[0] & 0x40))
+		    return; // the mouse only sends information about overflowing, do not care about it and return
+		if (!(mouse_bytes[0] & 0x20)){
+		   // printString("delta-y es negativo");
+		    y += mouse_bytes[2]/30;
+		}else{
+		   // printString("delta-y es positivo");
+		    y -= mouse_bytes[2]/30;
+		}
+		if (!(mouse_bytes[0] & 0x10)){
+		   // printString("delta-x es negativo");
+		    x += mouse_bytes[1]/30;
+		}else{
+		   // printString("delta-x es positivo");
+		    x -= mouse_bytes[1]/30;
+		}
+		printPosition(x,y);
+		if (mouse_bytes[0] & 0x4);
+		   // printString("Middle button is pressed!n");
+		if (mouse_bytes[0] & 0x2);
+		   // printString("Right button is pressed!n");
+		if (mouse_bytes[0] & 0x1);
+		   // printString("Left button is pressed!n");
+
     // do what you want here, just replace the puts's to execute an action for each button
     // to use the coordinate data, use mouse_bytes[1] for delta-x, and mouse_bytes[2] for delta-y
   }

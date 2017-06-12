@@ -9,7 +9,8 @@ static byte * currentVideo = (byte*)0xB8000;
 static byte fontColor = 0xF;
 static const dword width = 80;
 static const dword height = 25 ;
-
+static byte * mouse=(byte*)0xB8000;
+char mouseascci=0;
 void printString(const char * string) {
 	int i;
 
@@ -36,6 +37,15 @@ void printChar(char c) {
 		*currentVideo = fontColor;
 		currentVideo ++;
 	}
+}
+
+
+void printPosition(char posx,char posy){
+	if(mouseascci!=0)
+		*mouse=mouseascci;
+	mouseascci=*(video+posx*2+posy*2*80);
+	mouse=(video+posy*2+posx*2*80);
+	*mouse='a';
 }
 
 void scrollDown() {
