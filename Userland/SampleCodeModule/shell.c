@@ -11,6 +11,8 @@ void initShell() {
   int index=0;
   char c;
   int state;
+  
+
   while(1) {
     if ((c = getchar()) != EOF) {
     	if(c=='\b'){
@@ -40,6 +42,7 @@ void initShell() {
 	  	}
 		}
 	}
+	
 }
 
 int callfunction(char* buffer) {

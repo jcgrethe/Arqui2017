@@ -19,7 +19,7 @@ void set_up_mouse(){
     outIO(0x64,0x20);
 //espera para leer del mouse
 	mWait(0);
-	char status = (inIO(0x60) | 2);
+	unsigned char status = (inIO(0x60) | 2);
 	//status = (status & 0xEF);
 
 	mWait(1);
@@ -36,13 +36,13 @@ void set_up_mouse(){
 	
 }
 
-byte mRead(){
+unsigned char mRead(){
 	//Espera a poder leer
 	mWait(0);
 	return inIO(0x60);
 }
 
-void mWrite(char command){
+void mWrite(unsigned char command){
 	//Espera para poder mandar un comando
 	mWait(1);
 	//Le avisa que estamos por enviar un comando
@@ -74,60 +74,31 @@ void mWait(int t){
 
 }
 
-static uint8_t mouse_x = 0;
-static uint8_t mouse_y = 0;
-static int cycle = 0;
+static int cycle=0;
 static char mouseByte[3];
 void mouseHandler(){
-    
-    
-   if(!(inIO(0x64)& 0x20))
-   		return;
-    switch(cycle){
-    	case 0:
-	  		//ncPrintChar('b');
-	  		mouseByte[0] = mRead();
-	  		//ncPrintChar('c');
-	  		cycle++;
-	  		if(mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
-	  			//ncPrintChar('d');
-	  			cycle = 0;
-	  		}
-		break;
-		case 1:
-		  	//ncPrintChar('e');
-		  	mouseByte[1] = mRead();
-		    //ncPrintChar('f');
-		    cycle++;
-			break;
-		case 2:
-		  	//ncPrintChar('g');
-		  	mouseByte[2] = mRead();
-		  	//ncPrintChar('h');
-		  	cycle = 0;
-		  	uint8_t mouse_x_aux = mouse_x + mouseByte[1];
-		  	//ncPrintChar('i');
-		  	uint8_t mouse_y_aux = mouse_y - mouseByte[2];
-		  	//ncPrintChar('j');
-		  	if((mouse_x_aux >= 0 && mouse_x_aux <= 79) && (mouse_y_aux >= 0 && mouse_y_aux <= 24)) {
-		  		//ncPrintChar('k');
-		  		mouse_x += mouseByte[1];
-		  		//ncPrintChar('l');
-		  		mouse_y -= mouseByte[2];
-		  		//ncPrintChar('m');
-		  		//printDec(mouse_x);
-		  		//newline();
-		  		//printDec(mouse_y);
-				//newline();
-				printPosition(mouse_x,mouse_y);
+   
+   
+	   mouseByte[cycle] = mRead();
 
-			}
-			//ncPrintChar('n');
-			if(mouseByte[0] & 0x01)
-				//ncPrint("Left Button");
-			if(mouseByte[0] & 0x02)
-				//ncPrint("Right Button");
-	  	break;
-    }
-    
+	    if (cycle == 0) {
+	        // If Y or X overflows are set, I discard packet.
+	          if(mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
+	             // cycle = -1;
+	        }
+	    } else if (cycle == 2) {
+	          cycle = -1;
+	       // mouseByte[1]=mouseByte[1]/10;
+	       // mouseByte[2]=mouseByte[2]/10;
+	        printPosition(mouseByte[1],mouseByte[2]);
+
+	        if(mouseByte[0] & 0x01) {
+	            //print("Left Button");
+	        }
+	        if(mouseByte[0] & 0x02) {
+	            //print("Right Button");
+	        }
+	    }
+	    cycle++;
+ 	
 }

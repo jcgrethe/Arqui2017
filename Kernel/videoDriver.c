@@ -8,10 +8,9 @@ static char buffer[64] = { '0' };
 static byte * const video = (byte*)0xB8000;
 static byte * currentVideo = (byte*)0xB8000;
 static byte fontColor = 0xF;
-static const dword width = 80;
-static const dword height = 25 ;
-static byte * mouse=(byte*)0xB8000;
-char mouseascci=0;
+static const uint8_t width = 80;
+static const uint8_t height = 25 ;
+static char * mouse=(byte*)0xB8000;
 void printString(const char * string) {
 	int i;
 
@@ -40,16 +39,20 @@ void printChar(char c) {
 	}
 }
 
-
+static uint8_t mousex=0;
+static uint8_t mousey=0;
 void printPosition(uint8_t x,uint8_t y){
-	//printDec(x);
-	//printDec(y);
-	if(mouseascci!=0)
-		*mouse=mouseascci;
-	mouse=((char*)video+y*2+x*2*80);
-	mouseascci=*mouse;
-	
-	*mouse='a';
+	uint8_t aux=mousex+x;
+	uint8_t auxy=mousey-y;
+	if(aux>=0 && aux<width && auxy>=0 && auxy<height){
+		char * pos;
+		for(int i=1;i<height*width*2;i+=2)
+			video[i]=0x07;
+		mousex=aux;
+		mousey=auxy;
+		pos=(char*)video+width*mousey*2+mousex*2+1;
+		*pos=0xAF;
+	}
 }
 
 void scrollDown() {
