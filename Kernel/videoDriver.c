@@ -1,5 +1,6 @@
-#include "include/videoDriver.h"
 #include "include/types.h"
+#include "include/videoDriver.h"
+
 
 static dword uintToBase(qword value, char * buffer, dword base);
 
@@ -40,11 +41,14 @@ void printChar(char c) {
 }
 
 
-void printPosition(char posx,char posy){
+void printPosition(uint8_t x,uint8_t y){
+	//printDec(x);
+	//printDec(y);
 	if(mouseascci!=0)
 		*mouse=mouseascci;
-	mouseascci=*(video+posx*2+posy*2*80);
-	mouse=(video+posy*2+posx*2*80);
+	mouse=((char*)video+y*2+x*2*80);
+	mouseascci=*mouse;
+	
 	*mouse='a';
 }
 

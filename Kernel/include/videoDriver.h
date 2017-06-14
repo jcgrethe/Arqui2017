@@ -12,5 +12,5 @@ void printBin(uint64_t value);
 void printBase(uint64_t value, uint32_t base);
 void clear();
 void changeFontColor(char newColor);
-void printPosition(char,char);
+void printPosition(uint8_t,uint8_t);
 #endif

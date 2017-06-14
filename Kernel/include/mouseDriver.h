@@ -3,8 +3,8 @@
 
 void set_up_mouse();
 byte mRead();
-void mWrite(byte);
-void mWait(byte);
+void mWrite(char);
+void mWait(int);
 void mouseHandler();
 
 #endif
