@@ -2,7 +2,7 @@
 #include "include/KeyboardDriver.h"
 #include "include/types.h"
 #include <system_calls.h>
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 2000
 
 static byte buffer[BUFFER_SIZE];
 static int index=0;
@@ -12,7 +12,7 @@ static boolean caps=false;
 static boolean shift=false;
 static boolean alt=false;
 static boolean rshift=false;
-
+extern int read();
 
 void keyboardHandler() {
 	byte aux;

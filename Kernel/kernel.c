@@ -37,7 +37,7 @@ void * getStackBase() {
 }
 
 void * initializeKernelBinary() {
-	char buffer[10];
+	
 
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
@@ -56,8 +56,6 @@ int main() {
 
 
 	set_up_mouse();	
-	setPicMaster(0XF9);
-	setPicSlave(0XEF);
 	set_up_IDT();
 	set_up_system_calls();
 	sti();

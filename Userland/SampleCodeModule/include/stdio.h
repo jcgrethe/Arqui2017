@@ -9,6 +9,6 @@ void clearScreen();
 char getchar();
 void backspace() ;
 void newLine();
-void putchar(char a);
-
+void putchar(const char a);
+int changeFontColor(char* color);
 #endif

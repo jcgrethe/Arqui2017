@@ -31,7 +31,7 @@ void printf(const char * str,...){
 					state=0;
 					break;
 				case 's':
-					printf(va_arg(arguments, int));
+					printf(va_arg(arguments, char*));
 					state = 0;
 					break;
 				default:	

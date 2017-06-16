@@ -1,7 +1,8 @@
 #include "./types.h"
+#include "include/shell.h"
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
-
+#include "include/string.h"
 void initShell() {
 
   clearScreen();

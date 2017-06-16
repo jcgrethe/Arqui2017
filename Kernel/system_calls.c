@@ -3,7 +3,12 @@
 #include "include/KeyboardDriver.h"
 #include "include/videoDriver.h"
 #include "include/getTime.h"
-
+extern char getMin();
+extern char getHour();
+extern char getDat();
+extern char getMonth();
+extern char getYear();
+extern void binaryTime();
 typedef qword (*sys)(qword rsi, qword rdx, qword rcx, qword r8, qword r9);
 
 static sys sysCalls[10]; //Change this number to the total of the system calls
@@ -44,6 +49,7 @@ qword sys_time(qword min, qword hour, qword day, qword month, qword year) {
 
 qword sys_fontColor(qword color, qword rdx, qword rcx, qword r8, qword r9) {
     changeFontColor(color);
+    return 1;
 }
 
 void set_up_system_calls(){

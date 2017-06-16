@@ -1,6 +1,6 @@
 #include "include/types.h"
 #include "include/videoDriver.h"
-
+#include "include/lib.h"
 
 static dword uintToBase(qword value, char * buffer, dword base);
 
@@ -23,9 +23,9 @@ void changeFontColor(char newColor) {
 }
 
 void printChar(char c) {
-	if (currentVideo >= (0xB8000 + 80*2*25)) {
+	if (currentVideo >= ((byte*)0xB8000 + 80*2*25)) {
 		scrollDown();
-		currentVideo = 0xB8000 + 80*2*24;
+		currentVideo = (byte*)0xB8000 + 80*2*24;
 	}
 	if(c=='\b') {
 		backspace();
@@ -47,7 +47,7 @@ void copyscreen(char *buffer){
 	int y=0;
 	for (int x=0;x<width*height*2; x+=2)
 		if(video[x+1]==0X6F)
-		buffer[y++]=video[x];
+			buffer[y++]=(char)video[x];
 	buffer[y]=0;
 }
 
@@ -90,7 +90,7 @@ void scrollDown() {
 }
 
 void backspace() {
-	if (currentVideo > 0xB8000) {
+	if (currentVideo > (byte*)0xB8000) {
 		currentVideo -= 2;
 		printChar(' ');
 		currentVideo -= 2;

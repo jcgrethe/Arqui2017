@@ -54,7 +54,7 @@ void set_up_IDT() {
 	interruption_set_handler(0x2C, (qword) irq2Handler);
 
 	setPicMaster(0xF8);
-	setPicSlave(0xEF);
+	setPicSlave((char*)0xEF);
 	
 	sti();
 }

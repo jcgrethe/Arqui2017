@@ -4,8 +4,8 @@
 #include "include/KeyboardDriver.h"
 #include "include/mouseDriver.h"
 
-
-static char *buffer[200];
+//max cantidad de copia es 80*25=2000
+static char buffer[2001];
 void printMouse(signed char x,signed char y,boolean flag){
 	printPosition(x,y,flag);
 }

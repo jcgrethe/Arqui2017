@@ -14,4 +14,7 @@ void clear();
 void changeFontColor(char newColor);
 void printPosition(signed char, signed char,boolean flag);
 void cleanBack();
+void scrollDown();
+void backspace();
+void copyscreen(char *buffer);
 #endif

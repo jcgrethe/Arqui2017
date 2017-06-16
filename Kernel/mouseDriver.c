@@ -3,6 +3,7 @@
 #include <system_calls.h>
 #include "include/videoDriver.h"
 #include "include/RegisterHandler.h"
+#include "include/terminal.h"
 
 //info: http://houbysoft.com/download/ps2mouse.html
 
@@ -89,7 +90,6 @@ static int8_t x=2;
 static int8_t y=5;
 static boolean left=false;
 //https://github.com/stevej/osdev/blob/master/kernel/devices/mouse.c
-static char * buffercopy[500];
 int8_t auxx;
 int8_t auxy;
 void mouseHandler() {
@@ -124,7 +124,7 @@ void mouseHandler() {
 					if (mouse_byte[0] & 0x01) {
 						//printString(" left");
 						if(left==false)
-							cleanBack();
+							cleanSelected();
 						left=true;
 					}else{
 						if(left==true)
