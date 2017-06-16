@@ -10,6 +10,7 @@ static byte * currentVideo = (byte*)0xB8000;
 static byte fontColor = 0xF;
 static const dword width = 80;
 static const dword height = 25 ;
+static byte * mouse=(byte*)0xB8001;
 void printString(const char * string) {
 	int i;
 
@@ -37,15 +38,49 @@ void printChar(char c) {
 		currentVideo ++;
 	}
 }
-
-static byte * mouse;
-void printPosition(signed char x,signed char y) {
+void cleanBack(){
 	for(int x=1;x<width*height*2-1;x+=2)
-		video[x]=0X07;
-	mouse=(video + x*2*80 + y*2+1);
-	*mouse=0XAF;
-	
+			video[x]=0X07;
 }
+
+void copyscreen(char *buffer){
+	int y=0;
+	for (int x=0;x<width*height*2; x+=2)
+		if(video[x+1]==0X6F)
+		buffer[y++]=video[x];
+	buffer[y]=0;
+}
+
+boolean flag2;
+void printPosition(signed char x,signed char y,boolean flag) {
+	flag2=false;
+	if(!flag)
+		for(int x=1;x<width*height*2-1;x+=2){
+			video[x]=0X07;
+		}
+	mouse=(video + x*2*80 + y*2+1);
+	if(flag){
+		*mouse=0X6F;
+		for(int x=1;x<width*height*2-1;x+=2){
+			if(video+x<=mouse){
+				if(video[x]==0X6F || flag2)
+					flag2=true;
+				else
+					flag2=false;
+				if(flag2)
+					video[x]=0X6F;
+			}else
+				video[x]=0X07;
+		}
+	}	
+	else{	
+		*mouse=0X9F;
+	}
+}
+	
+	
+	//6f
+
 
 void scrollDown() {
 	int i;

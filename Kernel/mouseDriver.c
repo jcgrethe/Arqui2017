@@ -87,9 +87,9 @@ static uint8_t mouse_cycle = 0;
 static int8_t  mouse_byte[3];
 static int8_t x=2;
 static int8_t y=5;
-
+static boolean left=false;
 //https://github.com/stevej/osdev/blob/master/kernel/devices/mouse.c
-
+static char * buffercopy[500];
 int8_t auxx;
 int8_t auxy;
 void mouseHandler() {
@@ -122,19 +122,25 @@ void mouseHandler() {
 					auxx=0;
 					auxy=0;
 					if (mouse_byte[0] & 0x01) {
-						printString(" left");
+						//printString(" left");
+						if(left==false)
+							cleanBack();
+						left=true;
+					}else{
+						if(left==true)
+							copyscreen(buffercopy);
+						left=false;
 					}
 					if (mouse_byte[0] & 0x02) {
-						printString(" right");
+						//habria que mandarlo al buffer de teclado
+						printString(buffercopy);
 					}
 					auxx=x+mouse_byte[1];
 					auxy=y-mouse_byte[2];
 					if(auxy>=0 && auxx>=0 && auxy<25 && auxx<80){
 						x+=mouse_byte[1];
 						y-=mouse_byte[2];
-						printPosition(y,x);
-						
-						
+						printPosition(y,x,left);
 					}
 				}
 			}
