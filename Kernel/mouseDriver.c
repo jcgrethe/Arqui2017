@@ -110,26 +110,31 @@ void mouseHandler() {
 					break;
 				case 2:
 					mouse_byte[2] = mouse_in;
+					mouse_cycle = 0;
 					/* We now have a full mouse packet ready to use */
 					if (mouse_byte[0] & 0x80 || mouse_byte[0] & 0x40) {
 						/* x/y overflow? bad packet! */
 						break;
 					}
+					if (mouse_byte[0] & 0x04) {
+					}
+					
+					auxx=0;
+					auxy=0;
+					if (mouse_byte[0] & 0x01) {
+						printString(" left");
+					}
+					if (mouse_byte[0] & 0x02) {
+						printString(" right");
+					}
 					auxx=x+mouse_byte[1];
 					auxy=y-mouse_byte[2];
-					if(y>=0 && x>=0 && y<25 && x<80){
-						x+=mouse_byte[1]/10;
-						y-=mouse_byte[2]/10;
+					if(auxy>=0 && auxx>=0 && auxy<25 && auxx<80){
+						x+=mouse_byte[1];
+						y-=mouse_byte[2];
 						printPosition(y,x);
-						if (mouse_byte[0] & 0x01) {
-							printString(" left");
-						}
-						if (mouse_byte[0] & 0x02) {
-							printString(" right");
-						}
-						if (mouse_byte[0] & 0x04) {
-						}
-						mouse_cycle = 0;
+						
+						
 					}
 				}
 			}
