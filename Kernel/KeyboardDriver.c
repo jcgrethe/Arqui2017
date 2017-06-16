@@ -84,3 +84,9 @@ void readAllBuffer(char* buff, int size){
     
 }
 
+void addToBuffer(char *buffercopy){
+	for(int x=0;buffercopy[x]!=0;x++){
+		buffer[bufferindex]=buffercopy[x];
+		bufferindex=(bufferindex+1)%BUFFER_SIZE;
+	}
+}

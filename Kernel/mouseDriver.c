@@ -128,19 +128,19 @@ void mouseHandler() {
 						left=true;
 					}else{
 						if(left==true)
-							copyscreen(buffercopy);
+							copyToBuffer();
 						left=false;
 					}
 					if (mouse_byte[0] & 0x02) {
 						//habria que mandarlo al buffer de teclado
-						printString(buffercopy);
+							printCopy();
 					}
 					auxx=x+mouse_byte[1];
 					auxy=y-mouse_byte[2];
 					if(auxy>=0 && auxx>=0 && auxy<25 && auxx<80){
 						x+=mouse_byte[1];
 						y-=mouse_byte[2];
-						printPosition(y,x,left);
+						printMouse(y,x,left);
 					}
 				}
 			}

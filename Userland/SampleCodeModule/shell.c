@@ -8,10 +8,10 @@ void initShell() {
   printf("Shell: ");
   newLine();
   char buffer[100];
-  int index=0;
+  int index=1;
   char c;
   int state;
-  
+  getchar();
 
   while(1) {
     if ((c = getchar()) != EOF) {
