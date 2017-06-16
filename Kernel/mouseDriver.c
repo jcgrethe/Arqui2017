@@ -124,16 +124,16 @@ void mouseHandler() {
 					if (mouse_byte[0] & 0x01) {
 						//printString(" left");
 						if(left==false)
-							cleanSelected();
+							//cleanSelected();
 						left=true;
 					}else{
 						if(left==true)
-							copyToBuffer();
+							//copyToBuffer();
 						left=false;
 					}
 					if (mouse_byte[0] & 0x02) {
 						//habria que mandarlo al buffer de teclado
-							printCopy();
+							//printCopy();
 					}
 					auxx=x+mouse_byte[1];
 					auxy=y-mouse_byte[2];
