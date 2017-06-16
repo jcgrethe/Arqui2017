@@ -6,18 +6,21 @@
 
 //info: http://houbysoft.com/download/ps2mouse.html
 
-
 extern dword read();
 
-void set_up_mouse(){
+void set_up_mouse() {
 
-//espera a poder escribirle al mouse
-    mWait(1);
-    outIO(0x64,0xA8);
+	mWrite(0xFF);
+	while(!(mRead() & 0xAA));
 
-    mWait(1);
-    outIO(0x64,0x20);
-//espera para leer del mouse
+	//espera a poder escribirle al mouse
+	mWait(1);
+	outIO(0x64,0xA8);
+
+	mWait(1);
+	outIO(0x64,0x20);
+
+	//espera para leer del mouse
 	mWait(0);
 	unsigned char status = (inIO(0x60) | 2);
 	//status = (status & 0xEF);
@@ -84,55 +87,64 @@ signed char mouse_x_acum = 0;
 signed char mouse_y_acum = 0;
 
 void mouseHandler() {
-    
-	mouseByte[cycle++] = mRead();
 
-	if(cycle == 3) {
-		cycle = 0;
+	while(cycle < 3) {
+		mouseByte[cycle++] = mRead();
+	}
 
-		if(!(inIO(0x64) & 0x20) || mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
-			return;
-		}
-				
-		mouse_x_acum += (signed char)mouseByte[1];
-		mouse_y_acum += (signed char)mouseByte[2];
-		
-		/*
-		* Checkeo si el acumulador en X del mouse llego hasta -20
-		* para hacer un unico movimiento hacia la izquierda
-		*/
-		if (mouse_x_acum <= -20) {
-			if(mouse_x < 24) {
-				mouse_x += 1;
-			}
-			mouse_x_acum = 0;
-		} else if (mouse_x_acum >= 20) {
-			if(mouse_x > 0) {
-				mouse_x -= 1;
-			}
-			mouse_x_acum = 0;
-		}
-		
-		if (mouse_y_acum <= -20) {
-			if(mouse_y > 0) {
-				mouse_y -= 1;
-			}
-			mouse_y_acum = 0;
-		} else if (mouse_y_acum >= 20) {
-			if(mouse_y < 79) {
-				mouse_y += 1;
-			}
-			mouse_y_acum = 0;
-		}
+	cycle = 0;
 
-		printPosition(mouse_x, mouse_y);
+	if(!(inIO(0x64) & 0x20)) {
+		return;
+	}
 
-		if(mouseByte[0] & 0x01) {
-			//printString("Left Button");
-		}
+	if(mouseByte[0] & 0x01) {
+		printString("Left Button");
+		//mouseByte[0] &= ~(1 << 0x01);
+	}
+	
+	if(mouseByte[0] & 0x02) {
+		printString("Right Button");
+		//mouseByte[0] &= ~(1 << 0x02);
+	}
 
-		if(mouseByte[0] & 0x02) {
-			//printString("Right Button");
+	if(mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
+		mouse_x_acum = 0;
+		mouse_y_acum = 0;
+		return;
+	}
+			
+	mouse_x_acum += (signed char)mouseByte[1];
+	mouse_y_acum += (signed char)mouseByte[2];
+	
+	/*
+	* Checkeo si el acumulador en X del mouse llego hasta -20
+	* para hacer un unico movimiento hacia la izquierda
+	*/
+	if (mouse_x_acum <= -20) {
+		if(mouse_x < 24) {
+			mouse_x += 1;
 		}
-	}    
+		mouse_x_acum = 0;
+	} else if (mouse_x_acum >= 20) {
+		if(mouse_x > 0) {
+			mouse_x -= 1;
+		}
+		mouse_x_acum = 0;
+	}
+	
+	if (mouse_y_acum <= -20) {
+		if(mouse_y > 0) {
+			mouse_y -= 1;
+		}
+		mouse_y_acum = 0;
+	} else if (mouse_y_acum >= 20) {
+		if(mouse_y < 79) {
+			mouse_y += 1;
+		}
+		mouse_y_acum = 0;
+	}
+
+	printPosition(mouse_x, mouse_y);
+   
 }
