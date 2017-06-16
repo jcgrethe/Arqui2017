@@ -97,7 +97,7 @@ void mouseHandler() {
 	int8_t status = inIO(MOUSE_STATUS);
 	while (status & MOUSE_BBIT) {
 		int8_t mouse_in = inIO(MOUSE_PORT);
-		if (status & MOUSE_F_BIT) {
+		//if (status & MOUSE_F_BIT) {
 			switch (mouse_cycle) {
 				case 0:
 					mouse_byte[0] = mouse_in;
@@ -133,7 +133,7 @@ void mouseHandler() {
 					}
 					if (mouse_byte[0] & 0x02) {
 						//habria que mandarlo al buffer de teclado
-							//printCopy();
+							printCopy();
 					}
 					auxx=x+mouse_byte[1];
 					auxy=y-mouse_byte[2];
@@ -144,6 +144,6 @@ void mouseHandler() {
 					}
 				}
 			}
-		}
+		//}
 		status = inIO(MOUSE_STATUS);
 	}
