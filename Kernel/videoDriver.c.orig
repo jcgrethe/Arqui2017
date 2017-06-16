@@ -1,0 +1,142 @@
+#include "include/types.h"
+#include "include/videoDriver.h"
+
+
+static dword uintToBase(qword value, char * buffer, dword base);
+
+static char buffer[64] = { '0' };
+static byte * const video = (byte*)0xB8000;
+static byte * currentVideo = (byte*)0xB8000;
+static byte fontColor = 0xF;
+static const uint8_t width = 80;
+static const uint8_t height = 25 ;
+static char * mouse=(byte*)0xB8000;
+void printString(const char * string) {
+	int i;
+
+	for (i = 0; string[i] != 0; i++)
+		printChar(string[i]);
+}
+
+void changeFontColor(char newColor) {
+	fontColor = newColor;
+}
+
+void printChar(char c) {
+	if (currentVideo >= (0xB8000 + 80*2*25)) {
+		scrollDown();
+		currentVideo = 0xB8000 + 80*2*24;
+	}
+	if(c=='\b') {
+		backspace();
+	} else if(c=='\n') {
+		newline();
+	} else {
+		*currentVideo = c;
+		currentVideo ++;
+		*currentVideo = fontColor;
+		currentVideo ++;
+	}
+}
+
+<<<<<<< HEAD
+
+void printPosition(signed char x, signed char y) {
+	if(mouseascci!=0)
+		*mouse=mouseascci;
+	mouse=(video + x*2*80 + y*2);
+	mouseascci=*mouse;
+	*mouse='a';
+=======
+static uint8_t mousex=0;
+static uint8_t mousey=0;
+void printPosition(uint8_t x,uint8_t y){
+	uint8_t aux=mousex+x;
+	uint8_t auxy=mousey-y;
+	if(aux>=0 && aux<width && auxy>=0 && auxy<height){
+		char * pos;
+		for(int i=1;i<height*width*2;i+=2)
+			video[i]=0x07;
+		mousex=aux;
+		mousey=auxy;
+		pos=(char*)video+width*mousey*2+mousex*2+1;
+		*pos=0xAF;
+	}
+>>>>>>> 4b24bc87cafa86fc23f60bce955f04691e7a115b
+}
+
+void scrollDown() {
+	int i;
+	for (i = 0; i < 25; i++) {
+		memcpy(video + i*80*2, video + (i + 1)*80*2, 80*2);
+	}
+}
+
+void backspace() {
+	if (currentVideo > 0xB8000) {
+		currentVideo -= 2;
+		printChar(' ');
+		currentVideo -= 2;
+	}
+}
+
+void newline() {
+	do {
+		printChar(' ');
+	} while((qword)(currentVideo - video) % (width * 2) != 0);
+}
+
+void printDec(qword value) {
+	printBase(value, 10);
+}
+
+void printHex(qword value) {
+	printBase(value, 16);
+}
+
+void printBin(qword value) {
+	printBase(value, 2);
+}
+
+void printBase(qword value, dword base) {
+    uintToBase(value, buffer, base);
+    printString(buffer);
+}
+
+void clear() {
+	int i;
+
+	for (i = 0; i < height * width; i++)
+		video[i * 2] = ' ';
+	currentVideo = video;
+}
+
+static dword uintToBase(qword value, char * buffer, dword base) {
+	char *p = buffer;
+	char *p1, *p2;
+	dword digits = 0;
+
+	//Calculate characters for each digit
+	do	{
+		dword remainder = value % base;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
+	}	while (value /= base);
+
+	// Terminate string in buffer.
+	*p = 0;
+
+	//Reverse string in buffer.
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2) {
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+
+	return digits;
+}
+

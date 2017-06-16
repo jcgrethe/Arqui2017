@@ -74,65 +74,31 @@ void mWait(int t){
 
 }
 
-static signed char mouse_x = 0;
-static signed char mouse_y = 0;
+static int cycle=0;
+static char mouseByte[3];
+void mouseHandler(){
+   
+   
+	   mouseByte[cycle] = mRead();
 
-static int cycle = 0;
-static unsigned char mouseByte[3] = {0};
+	    if (cycle == 0) {
+	        // If Y or X overflows are set, I discard packet.
+	          if(mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
+	             // cycle = -1;
+	        }
+	    } else if (cycle == 2) {
+	          cycle = -1;
+	       // mouseByte[1]=mouseByte[1]/10;
+	       // mouseByte[2]=mouseByte[2]/10;
+	        printPosition(mouseByte[1],mouseByte[2]);
 
-signed char mouse_x_acum = 0;
-signed char mouse_y_acum = 0;
-
-void mouseHandler() {
-    
-	mouseByte[cycle++] = mRead();
-
-	if(cycle == 3) {
-		cycle = 0;
-
-		if(!(inIO(0x64) & 0x20) || mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
-			return;
-		}
-				
-		mouse_x_acum += (signed char)mouseByte[1];
-		mouse_y_acum += (signed char)mouseByte[2];
-		
-		/*
-		* Checkeo si el acumulador en X del mouse llego hasta -20
-		* para hacer un unico movimiento hacia la izquierda
-		*/
-		if (mouse_x_acum <= -20) {
-			if(mouse_x < 24) {
-				mouse_x += 1;
-			}
-			mouse_x_acum = 0;
-		} else if (mouse_x_acum >= 20) {
-			if(mouse_x > 0) {
-				mouse_x -= 1;
-			}
-			mouse_x_acum = 0;
-		}
-		
-		if (mouse_y_acum <= -20) {
-			if(mouse_y > 0) {
-				mouse_y -= 1;
-			}
-			mouse_y_acum = 0;
-		} else if (mouse_y_acum >= 20) {
-			if(mouse_y < 79) {
-				mouse_y += 1;
-			}
-			mouse_y_acum = 0;
-		}
-
-		printPosition(mouse_x, mouse_y);
-
-		if(mouseByte[0] & 0x01) {
-			//printString("Left Button");
-		}
-
-		if(mouseByte[0] & 0x02) {
-			//printString("Right Button");
-		}
-	}    
+	        if(mouseByte[0] & 0x01) {
+	            //print("Left Button");
+	        }
+	        if(mouseByte[0] & 0x02) {
+	            //print("Right Button");
+	        }
+	    }
+	    cycle++;
+ 	
 }

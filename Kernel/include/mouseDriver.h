@@ -2,8 +2,8 @@
 #define MOUSE_DRIVER_H
 
 void set_up_mouse();
-byte mRead();
-void mWrite(char);
+unsigned char mRead();
+void mWrite(unsigned char);
 void mWait(int);
 void mouseHandler();
 

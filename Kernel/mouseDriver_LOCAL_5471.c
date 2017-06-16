@@ -19,7 +19,7 @@ void set_up_mouse(){
     outIO(0x64,0x20);
 //espera para leer del mouse
 	mWait(0);
-	unsigned char status = (inIO(0x60) | 2);
+	char status = (inIO(0x60) | 2);
 	//status = (status & 0xEF);
 
 	mWait(1);
@@ -36,13 +36,13 @@ void set_up_mouse(){
 	
 }
 
-unsigned char mRead(){
+byte mRead(){
 	//Espera a poder leer
 	mWait(0);
 	return inIO(0x60);
 }
 
-void mWrite(unsigned char command){
+void mWrite(char command){
 	//Espera para poder mandar un comando
 	mWait(1);
 	//Le avisa que estamos por enviar un comando
