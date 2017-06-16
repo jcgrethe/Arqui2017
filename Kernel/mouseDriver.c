@@ -6,36 +6,42 @@
 
 //info: http://houbysoft.com/download/ps2mouse.html
 
+#define PACKETS_IN_PIPE 1024
+#define DISCARD_POINT 32
+
+
+
+#define MOUSE_PORT   0x60
+#define MOUSE_STATUS 0x64
+#define MOUSE_ABIT   0x02
+#define MOUSE_BBIT   0x01
+#define MOUSE_WRITE  0xD4
+#define MOUSE_F_BIT  0x20
+#define MOUSE_V_BIT  0x08
+#define MOUSE_IRQ 12
+
 extern dword read();
 
-void set_up_mouse() {
+void set_up_mouse(){
 
-	mWrite(0xFF);
-	while(!(mRead() & 0xAA));
-
-	//espera a poder escribirle al mouse
+	int8_t status;
+	//IRQ_OFF;
+	//mouse_pipe = make_pipe(sizeof(mouse_device_packet_t) * PACKETS_IN_PIPE);
 	mWait(1);
-	outIO(0x64,0xA8);
-
+	outIO(MOUSE_STATUS, 0xA8);
 	mWait(1);
-	outIO(0x64,0x20);
-
-	//espera para leer del mouse
+	outIO(MOUSE_STATUS, 0x20);
 	mWait(0);
-	unsigned char status = (inIO(0x60) | 2);
-	//status = (status & 0xEF);
-
+	status = inIO(0x60) | 2;
 	mWait(1);
-	outIO(0x64, 0x60);
-
+	outIO(MOUSE_STATUS, 0x60);
 	mWait(1);
-	outIO(0x60, status);
-
+	outIO(MOUSE_PORT, status);
 	mWrite(0xF6);
 	mRead();
-
 	mWrite(0xF4);
 	mRead();
+
 	
 }
 
@@ -77,74 +83,56 @@ void mWait(int t){
 
 }
 
-static signed char mouse_x = 0;
-static signed char mouse_y = 0;
+static uint8_t mouse_cycle = 0;
+static int8_t  mouse_byte[3];
+static int8_t x=2;
+static int8_t y=5;
 
-static int cycle = 0;
-static unsigned char mouseByte[3] = {0};
+//https://github.com/stevej/osdev/blob/master/kernel/devices/mouse.c
 
-signed char mouse_x_acum = 0;
-signed char mouse_y_acum = 0;
-
+int8_t auxx;
+int8_t auxy;
 void mouseHandler() {
-
-	while(cycle < 3) {
-		mouseByte[cycle++] = mRead();
-	}
-
-	cycle = 0;
-
-	if(!(inIO(0x64) & 0x20)) {
-		return;
-	}
-
-	if(mouseByte[0] & 0x01) {
-		printString("Left Button");
-		//mouseByte[0] &= ~(1 << 0x01);
-	}
-	
-	if(mouseByte[0] & 0x02) {
-		printString("Right Button");
-		//mouseByte[0] &= ~(1 << 0x02);
-	}
-
-	if(mouseByte[0] & 0x80 || mouseByte[0] & 0x40) {
-		mouse_x_acum = 0;
-		mouse_y_acum = 0;
-		return;
-	}
-			
-	mouse_x_acum += (signed char)mouseByte[1];
-	mouse_y_acum += (signed char)mouseByte[2];
-	
-	/*
-	* Checkeo si el acumulador en X del mouse llego hasta -20
-	* para hacer un unico movimiento hacia la izquierda
-	*/
-	if (mouse_x_acum <= -20) {
-		if(mouse_x < 24) {
-			mouse_x += 1;
+    
+	int8_t status = inIO(MOUSE_STATUS);
+	while (status & MOUSE_BBIT) {
+		int8_t mouse_in = inIO(MOUSE_PORT);
+		if (status & MOUSE_F_BIT) {
+			switch (mouse_cycle) {
+				case 0:
+					mouse_byte[0] = mouse_in;
+					if (!(mouse_in & MOUSE_V_BIT)) return;
+					++mouse_cycle;
+					break;
+				case 1:
+					mouse_byte[1] = mouse_in;
+					++mouse_cycle;
+					break;
+				case 2:
+					mouse_byte[2] = mouse_in;
+					/* We now have a full mouse packet ready to use */
+					if (mouse_byte[0] & 0x80 || mouse_byte[0] & 0x40) {
+						/* x/y overflow? bad packet! */
+						break;
+					}
+					auxx=x+mouse_byte[1];
+					auxy=y-mouse_byte[2];
+					if(y>=0 && x>=0 && y<25 && x<80){
+						x+=mouse_byte[1]/10;
+						y-=mouse_byte[2]/10;
+						printPosition(y,x);
+						if (mouse_byte[0] & 0x01) {
+							printString(" left");
+						}
+						if (mouse_byte[0] & 0x02) {
+							printString(" right");
+						}
+						if (mouse_byte[0] & 0x04) {
+						}
+						mouse_cycle = 0;
+					}
+				}
+			}
 		}
-		mouse_x_acum = 0;
-	} else if (mouse_x_acum >= 20) {
-		if(mouse_x > 0) {
-			mouse_x -= 1;
-		}
-		mouse_x_acum = 0;
+		status = inIO(MOUSE_STATUS);
 	}
-	
-	if (mouse_y_acum <= -20) {
-		if(mouse_y > 0) {
-			mouse_y -= 1;
-		}
-		mouse_y_acum = 0;
-	} else if (mouse_y_acum >= 20) {
-		if(mouse_y < 79) {
-			mouse_y += 1;
-		}
-		mouse_y_acum = 0;
-	}
-
-	printPosition(mouse_x, mouse_y);
-   
-}
