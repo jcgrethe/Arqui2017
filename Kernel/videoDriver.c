@@ -41,14 +41,11 @@ void printChar(char c) {
 }
 
 
-void printPosition(uint8_t x,uint8_t y){
-	//printDec(x);
-	//printDec(y);
+void printPosition(signed char x, signed char y) {
 	if(mouseascci!=0)
 		*mouse=mouseascci;
-	mouse=((char*)video+y*2+x*2*80);
+	mouse=(video + x*2*80 + y*2);
 	mouseascci=*mouse;
-	
 	*mouse='a';
 }
 
