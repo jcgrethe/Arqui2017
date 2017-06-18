@@ -1,7 +1,6 @@
 /*backEnd.c*/
 
 
-#include "getnum.h"
 #include <stdio.h>
 #include <string.h>
 

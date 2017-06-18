@@ -1,7 +1,6 @@
 #include "./types.h"
 #include "include/stdio.h"
 #include "include/string.h"
-#include "include/getnum.h"
 #include <stdarg.h>
 extern void int80(qword rdi, qword rsi, qword rdx, qword rcx, qword r8, qword r9);
 
