@@ -124,11 +124,11 @@ void mouseHandler() {
 					if (mouse_byte[0] & 0x01) {
 						//printString(" left");
 						if(left==false)
-							//cleanSelected();
+							cleanSelected();
 						left=true;
 					}else{
 						if(left==true)
-							//copyToBuffer();
+							copyToBuffer();
 						left=false;
 					}
 					if (mouse_byte[0] & 0x02) {

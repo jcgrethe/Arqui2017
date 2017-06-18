@@ -3,6 +3,7 @@
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
 #include "include/string.h"
+#include "include/blobsFront.h"
 void initShell() {
 
   clearScreen();
@@ -69,6 +70,13 @@ int callfunction(char* buffer) {
 	}
 	if(strcmp(function, "clear")) {
 		 clearScreen();
+		 return 0;
+	}
+	if(strcmp(function, "BlowsWar")) {
+		clearScreen();
+		 juego();
+		 clearScreen();
+		 printf("Shell:" );
 		 return 0;
 	}
 

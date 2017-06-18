@@ -1,8 +1,33 @@
 #include "./types.h"
 #include "include/stdio.h"
 #include "include/string.h"
+#include "include/getnum.h"
 #include <stdarg.h>
 extern void int80(qword rdi, qword rsi, qword rdx, qword rcx, qword r8, qword r9);
+
+static char * mal=0x20000000000;
+
+
+int abs(int a){
+	if(a>=0)
+		return a;
+	return -a;
+}
+
+
+void free(void * x){
+	return;
+}
+
+void * malloc(int size){
+	for(int x=0;x<size;x++)
+		mal[x]=0;
+	void * ret= mal;
+	mal+=size+1;
+	return ret;
+}
+
+
 
 //https://www.tutorialspoint.com/cprogramming/c_variable_arguments.htm y ayuda de augusto
 void printf(const char * str,...){
@@ -78,17 +103,26 @@ void newLine(){
 void intostr(int num,char * ret){
 	int dig=0;
 	char aux;
-	while(num!=0){
-		ret[dig]=(num%10)+'0';
-		num=num/10;
-		dig++;
-	}
-	for(int x=0;x<dig/2;x++){
-		aux=ret[x];
-		ret[x]=ret[dig-x-1];
-		ret[dig-x-1]=aux;
-	}
-	ret[dig]=0;
+	if(num!=0){
+		if(num<0){
+			num=-num;
+			ret[0]='-';
+			dig++;
+		}
+		while(num!=0){
+			ret[dig]=(num%10)+'0';
+			num=num/10;
+			dig++;
+		}
+		for(int x=0;x<dig/2;x++){
+			aux=ret[x];
+			ret[x]=ret[dig-x-1];
+			ret[dig-x-1]=aux;
+		}
+		ret[dig]=0;
+	}else{
+		ret[0]='0';
+	}	
 }
 
 void time(char* m,char* h,char* d,char* mo,char* y) {
@@ -112,4 +146,165 @@ int changeFontColor(char* color) {
 	return 0;
 }
 
+
+int sscanf(char format [90],char str[90], ...){
+
+		va_list args;
+		va_start( args, format );
+
+		int* a;
+		int mult;
+		int n=0;
+		char strnum[10];
+		char* character;
+
+		while(*format!='\0'){
+			if(*format!='%'){
+				if((*format) != (*str)){
+					return n;
+				} else{
+					format++;
+					str++;
+				}
+			}else{
+				switch(*(++format)){
+					case '%':
+						if(*str != '%') return n;
+						else str++;
+						break;
+					case 'd':
+					case 'i':
+						a=va_arg(args, int);
+						*a=*str-'0';
+						str++;
+						n++;
+						break;
+					case 'c':
+						character = va_arg(args, char*);
+						*character = *str++;
+						n++;
+						break;
+					case 's':
+						character = va_arg(args,char*);
+						char temp;
+						while( (temp = *str) != '\0'){
+							*character = *str;
+							character++;
+							str++;
+						}
+						n++;
+
+				}
+				++format;
+			}
+		}
+		return n;
+	}
+
+
+int scanf(const char* format,...){
+	va_list args;
+	va_start( args, format );
+
+	int n=0;
+
+	char* str = readLine();
+    char* character;
+
+
+	while(*format!='\0'){
+		if(*format!='%'){
+            if((*format) != (*str)){
+                return n;
+            } else{
+                format++;
+                str++;
+            }
+		}else{
+			switch(*(++format)){
+				case '%':
+                    if(*str != '%') return n;
+                    else str++;
+                    break;
+				case 'd':
+				case 'i':
+                    str = readInt(str, va_arg(args,int));
+					n++;
+					break;
+				case 'c':
+                    character = va_arg(args, char*);
+                    *character = *str++;
+                    n++;
+                    break;
+				case 's':
+                    character = va_arg(args,char*);
+                    char temp;
+                    while( (temp = *str) != '\0'){
+                        *character = *str;
+                        character++;
+                        str++;
+                    }
+                    n++;
+			}
+			++format;
+		}
+	}
+
+	return n;
+}
+
+char* readLine() {
+    int bufferIndex = 0;
+    char *buff = malloc(80 + 1);
+
+    int c ;
+
+    while ((c = getchar()) != '\n') {
+        if(c == '\b'){
+            if (bufferIndex != 0) {
+                bufferIndex--;
+                putchar('\b');
+            }
+        }
+        else if(c != -1){
+            if (bufferIndex <= 80) {
+                buff[bufferIndex++] = c;
+            }
+            putchar(c);
+        }
+
+    }
+    buff[bufferIndex] = '\0';
+    return buff;
+}
+
+char* readInt(char* string, int* num){
+    *num = 0;
+	boolean sign=1;
+
+    if(*string == '-'){
+		if (isNum(*(string + 1))) {
+			sign = -1;
+			*num = (*(string + 1) - '0') * sign;
+			string++;
+			string++;
+		} else {
+			return string;
+
+		}
+	}
+
+	int c;
+
+    while (isNum(c = *string)){
+        *num = (*num)*10+(c-'0')*sign;
+        string++;
+    }
+    return string;
+}
+
+
+int isNum(char c){
+	return (c >= '0' && c <= '9');
+}
 
