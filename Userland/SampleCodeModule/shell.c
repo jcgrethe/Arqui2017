@@ -9,12 +9,11 @@ void initShell() {
   clearScreen();
   printf("Shell: ");
   newLine();
-  char buffer[100];
-  int index=1;
+  char buffer[25*80];
+  int index=0;
   char c;
   int state;
-  getchar();
-
+  boolean first=true;
   while(1) {
     if ((c = getchar()) != EOF) {
     	if(c=='\b'){
@@ -43,6 +42,12 @@ void initShell() {
 	  		}	   
 	  	}
 		}
+		if(first){
+			backspace();
+			index--;
+			buffer[index]=0;
+			first=false;
+		}
 	}
 	
 }
@@ -50,6 +55,7 @@ void initShell() {
 int callfunction(char* buffer) {
 	int x=0;
 	char function[10];
+	//printf("%s",buffer);
 	while(buffer[x]!=' ' && buffer[x]!=0) {
 		function[x]=buffer[x];
 		x++;

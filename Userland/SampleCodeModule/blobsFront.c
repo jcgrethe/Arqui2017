@@ -219,7 +219,7 @@ menuInicial()
 	//do{
 	 //	printf("\n\nMenu:\nIngrese un numero:\n1)Dos jugadores\n2)Un jugador\n3)Abrir juego\n4)terminar\n");
 	//}while (aux<1 || aux >4);
-	return 1;
+	return 2;
 }
 
 
