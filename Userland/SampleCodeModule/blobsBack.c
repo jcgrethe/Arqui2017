@@ -1,9 +1,11 @@
 /*backEnd.c*/
 
 
-#include "getnum.h"
-#include <stdio.h>
-#include <string.h>
+#include "include/blobsBack.h"
+#include "include/blobsFront.h"
+#include "include/stdio.h"
+#include "include/timeAndDate.h"
+#include "include/string.h"
 
 #define ON 1
 #define OFF 0

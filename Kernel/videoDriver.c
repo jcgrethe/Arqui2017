@@ -1,7 +1,5 @@
 #include "include/types.h"
 #include "include/videoDriver.h"
-#include "include/lib.h"
-
 static dword uintToBase(qword value, char * buffer, dword base);
 
 static char buffer[64] = { '0' };
@@ -11,11 +9,22 @@ static byte fontColor = 0xF;
 static const dword width = 80;
 static const dword height = 25 ;
 static byte * mouse=(byte*)0xB8001;
+static char screen[26*160];
+static byte * currentScreen=screen;
+static int mousescreen=1;
+void updateScreen(){
+	for (int i = 0; i < 25; i++) {
+		memcpy(video + i*80*2, screen + i*80*2, 80*2);
+	}
+}
+
+
+
 void printString(const char * string) {
 	int i;
 
-	for (i = 0; string[i] != 0; i++)
-		printChar(string[i]);
+	for (i = 0; string[i] != 0; i++);
+		//printChar(string[i]);
 }
 
 void changeFontColor(char newColor) {
@@ -26,6 +35,7 @@ void printChar(char c) {
 	if (currentVideo >= ((byte*)0xB8000 + 80*2*25)) {
 		scrollDown();
 		currentVideo = (byte*)0xB8000 + 80*2*24;
+		currentScreen=screen+80*2*24;
 	}
 	if(c=='\b') {
 		backspace();
@@ -33,21 +43,27 @@ void printChar(char c) {
 		newline();
 	} else {
 		*currentVideo = c;
+		*currentScreen=c;
 		currentVideo ++;
+		currentScreen++;
 		*currentVideo = fontColor;
+		*currentScreen=fontColor;
+		currentScreen++;
 		currentVideo ++;
 	}
 }
 void cleanBack(){
-	for(int x=1;x<width*height*2-1;x+=2)
+	for(int x=1;x<width*height*2-1;x+=2){
 			video[x]=0X07;
+			*(screen+x)=0X07;
+	}
 }
 
 void copyscreen(char *buffer){
 	int y=0;
 	for (int x=0;x<width*height*2; x+=2)
-		if(video[x+1]==0X6F)
-			buffer[y++]=(char)video[x];
+		if(screen[x+1]==0X6F)
+			buffer[y++]=screen[x];
 	buffer[y]=0;
 }
 
@@ -57,25 +73,30 @@ void printPosition(signed char x,signed char y,boolean flag) {
 	if(!flag)
 		for(int x=1;x<width*height*2-1;x+=2){
 			video[x]=0X07;
+			screen[x]=0X07;
 		}
 	mouse=(video + x*2*80 + y*2+1);
+	mousescreen=x*2*80 + y*2+1;
 	if(flag){
 		*mouse=0X6F;
+		screen[mousescreen]=0X6F;
 		for(int x=1;x<width*height*2-1;x+=2){
 			if(video+x<=mouse){
-				if(video[x]==0X6F || flag2)
+				if(screen[x]==0X6F || flag2)
 					flag2=true;
 				else
 					flag2=false;
 				if(flag2)
-					video[x]=0X6F;
+					screen[x]=0X6F;
 			}else
-				video[x]=0X07;
+				screen[x]=0X07;
 		}
+		updateScreen();
 	}	
 	else{	
 		*mouse=0X9F;
 	}
+
 }
 	
 	
@@ -83,17 +104,23 @@ void printPosition(signed char x,signed char y,boolean flag) {
 
 
 void scrollDown() {
-	int i;
-	for (i = 0; i < 25; i++) {
-		memcpy(video + i*80*2, video + (i + 1)*80*2, 80*2);
+	for (int i = 0; i < 25; i++) {
+		memcpy(video + i*80*2, screen + (i+1)*80*2, 80*2);
+		memcpy(screen + i*80*2, screen + (i+1)*80*2, 80*2);
 	}
+	
+	// for (i = 0; i < 25; i++) {
+	// 	memcpy(video + i*80*2, video + (i + 1)*80*2, 80*2);
+	// }
 }
 
 void backspace() {
 	if (currentVideo > (byte*)0xB8000) {
 		currentVideo -= 2;
+		currentScreen-=2;
 		printChar(' ');
 		currentVideo -= 2;
+		currentScreen-=2;
 	}
 }
 
@@ -123,8 +150,11 @@ void printBase(qword value, dword base) {
 void clear() {
 	int i;
 
-	for (i = 0; i < height * width; i++)
+	for (i = 0; i < height * width; i++){
 		video[i * 2] = ' ';
+		screen[i * 2]=' ';
+	}
+	currentScreen=screen;
 	currentVideo = video;
 }
 

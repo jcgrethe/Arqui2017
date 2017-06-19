@@ -1,11 +1,11 @@
 /*blobsFront.c*/
 
 
-#include "blobsBack.h"
-#include "blobsFront.h"
-#include "getnum.h"
-#include <stdio.h>
-#include <string.h>
+#include "include/blobsBack.h"
+#include "include/blobsFront.h"
+#include "include/stdio.h"
+#include "include/timeAndDate.h"
+#include "include/string.h"
 
 #define ON 1
 #define OFF 0
@@ -15,24 +15,25 @@
 int juego()
 {
 	/*Declaraciones*/
-	int flagComando=-1;			
-	tipoJuego Partida;
-	char ingreso[90], * filename;
-	int movimiento[4], disponible = 0;
-	do{
-		/*Inicia programa*/
-		Partida.modo=menuInicial();
+	 int flagComando=-1;			
+	 tipoJuego Partida;
+
+	 char ingreso[90];
+	 int movimiento[4], disponible = 0;
+	 do{
+	 	/*Inicia programa*/
+	 	Partida.modo=menuInicial();
 		
-		decidirMenu(&Partida);
-		if(Partida.modo!=4)
-		{	
-			if (Partida.modo != 3)
-			{
+	 	decidirMenu(&Partida);
+	 	if(Partida.modo!=4)
+	 	{	
+	 		if (Partida.modo != 3)
+	 		{
 				
-				/*Nueva partida*/
-				Partida.turno = 1;
-				pedirDimensiones(&Partida);
-				crearTablero(&Partida);
+	 			/*Nueva partida*/
+	 			Partida.turno = 1;
+	 			pedirDimensiones(&Partida);
+	 			crearTablero(&Partida);
 			}
 			//imprimirError(&Partida);
 			/*Inicia la partida*/
@@ -91,7 +92,7 @@ int juego()
 			resetear(&Partida);	
 		}
 		
-	}while(Partida.modo != 4);
+	 }while(Partida.modo != 4);
 
 	return 0;
 }

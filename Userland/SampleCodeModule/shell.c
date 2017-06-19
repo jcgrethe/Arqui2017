@@ -72,7 +72,7 @@ int callfunction(char* buffer) {
 		 clearScreen();
 		 return 0;
 	}
-	if(strcmp(function, "BlowsWar")) {
+	if(strcmp(function, "BlobsWar")) {
 		clearScreen();
 		 juego();
 		 clearScreen();
