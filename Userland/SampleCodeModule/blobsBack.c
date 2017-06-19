@@ -1,11 +1,16 @@
 /*backEnd.c*/
 
 
+<<<<<<< HEAD
 #include "include/blobsBack.h"
 #include "include/blobsFront.h"
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
 #include "include/string.h"
+=======
+#include <stdio.h>
+#include <string.h>
+>>>>>>> mouseDriver
 
 #define ON 1
 #define OFF 0
