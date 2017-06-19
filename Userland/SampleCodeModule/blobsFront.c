@@ -1,8 +1,8 @@
 /*blobsFront.c*/
 
-
-#include "include/blobsBack.h"
 #include "include/blobsFront.h"
+#include "include/blobsBack.h"
+
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
 #include "include/string.h"
@@ -35,7 +35,7 @@ int juego()
 	 			pedirDimensiones(&Partida);
 	 			crearTablero(&Partida);
 			}
-			//imprimirError(&Partida);
+			imprimirError(&Partida);
 			/*Inicia la partida*/
 			imprimirTablero(&Partida);
 			while((disponible = buscarMovimiento(&Partida, movimiento)) && Partida.modo != 4)

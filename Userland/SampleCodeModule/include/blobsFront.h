@@ -1,9 +1,9 @@
 /*blobsFront.h*/ 
-#include "blobsBack.h"
+
 #ifndef _blobsFront_h
 #define _blobsFront_h
 
-
+#include "blobsBack.h"
 
 int juego();
 void pedirDimensiones(tipoJuego *);
