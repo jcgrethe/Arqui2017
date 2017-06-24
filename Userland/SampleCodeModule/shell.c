@@ -1,16 +1,19 @@
 #include "./types.h"
+#include "include/shell.h"
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
-
+#include "include/string.h"
+#include "include/blobsFront.h"
 void initShell() {
 
   clearScreen();
   printf("Shell: ");
   newLine();
-  char buffer[100];
+  char buffer[25*80];
   int index=0;
   char c;
   int state;
+  boolean first=true;
   while(1) {
     if ((c = getchar()) != EOF) {
     	if(c=='\b'){
@@ -39,12 +42,20 @@ void initShell() {
 	  		}	   
 	  	}
 		}
+		if(first){
+			backspace();
+			index--;
+			buffer[index]=0;
+			first=false;
+		}
 	}
+	
 }
 
 int callfunction(char* buffer) {
 	int x=0;
 	char function[10];
+	//printf("%s",buffer);
 	while(buffer[x]!=' ' && buffer[x]!=0) {
 		function[x]=buffer[x];
 		x++;
@@ -63,6 +74,18 @@ int callfunction(char* buffer) {
 	if(strcmp(function, "fontColor")) {
 		return changeFontColor(buffer+x+1);
 	}
+	if(strcmp(function, "clear")) {
+		 clearScreen();
+		 return 0;
+	}
+	if(strcmp(function, "BlobsWar")) {
+		clearScreen();
+		 juego();
+		 clearScreen();
+		 printf("Shell:" );
+		 return 0;
+	}
+
 	return 1;
 }
 

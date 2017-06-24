@@ -9,7 +9,11 @@ int strlen(const char* str) {
   }
   return length;
 }
-
+boolean isspace(char c){
+	if(c==' ')
+		return true;
+	return false;
+}
 boolean strcmp(char* s1,char* s2){
 	int x=0;
 	boolean flag=true;

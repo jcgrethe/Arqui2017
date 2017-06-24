@@ -1,3 +1,4 @@
+#include "include/types.h"
 #include <stdint.h>
 #include <string.h>
 #include <lib.h>
@@ -5,7 +6,7 @@
 #include <interruptions.h>
 #include <KeyboardDriver.h>
 #include "include/videoDriver.h"
-#include "include/types.h"
+#include "include/mouseDriver.h"
 #include "include/system_calls.h"
 
 extern byte text;
@@ -16,7 +17,7 @@ extern byte endOfKernelBinary;
 extern byte endOfKernel;
 
 static const qword PageSize = 0x1000;
-extern unsigned int readk();
+extern unsigned int read();
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
@@ -36,7 +37,7 @@ void * getStackBase() {
 }
 
 void * initializeKernelBinary() {
-	char buffer[10];
+	
 
 	void * moduleAddresses[] = {
 		sampleCodeModuleAddress,
@@ -50,9 +51,14 @@ void * initializeKernelBinary() {
 	return getStackBase();
 }
 
-int main() {	
+int main() {
+	cli();
+
+
+	set_up_mouse();	
 	set_up_IDT();
 	set_up_system_calls();
+	sti();
 
 	/*
 	while(1) {
@@ -66,7 +72,7 @@ int main() {
 
 	/* Execute UserLand, sampleCodeModule */
 	//printStringHex(((EntryPoint)sampleCodeModuleAddress)());
-	
+
 	((EntryPoint)sampleCodeModuleAddress)();
 
 	return 0;

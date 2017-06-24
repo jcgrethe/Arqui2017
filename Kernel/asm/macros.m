@@ -52,6 +52,22 @@
 	iretq
 %endmacro
 
+%macro irqHandlerSlave 1
+	pushaq
+
+	mov rdi, %1
+	call irqDispatcher
+	
+	mov al, 0A0h ; EOI
+	out 0A0h, al
+	
+	in al, 60h
+
+	popaq
+
+	iretq
+%endmacro
+
 %macro pushStack 0
 	push rbp
     mov rbp,rsp

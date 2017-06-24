@@ -2,7 +2,7 @@
 #include "include/KeyboardDriver.h"
 #include "include/types.h"
 #include <system_calls.h>
-#define BUFFER_SIZE 20
+#define BUFFER_SIZE 2000
 
 static byte buffer[BUFFER_SIZE];
 static int index=0;
@@ -12,11 +12,11 @@ static boolean caps=false;
 static boolean shift=false;
 static boolean alt=false;
 static boolean rshift=false;
-
+extern int read();
 
 void keyboardHandler() {
 	byte aux;
-	byte key= readk();
+	byte key= read();
 	 if (key == 0x1D || key==0X9D) {
         ctrl = !ctrl; 
         return;
@@ -84,3 +84,9 @@ void readAllBuffer(char* buff, int size){
     
 }
 
+void addToBuffer(char *buffercopy){
+	for(int x=0;buffercopy[x]!=0;x++){
+		buffer[bufferindex]=buffercopy[x];
+		bufferindex=(bufferindex+1)%BUFFER_SIZE;
+	}
+}
