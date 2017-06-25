@@ -1,9 +1,18 @@
+/* sampleCodeModule.c */
 #include "./types.h"
 #include "include/shell.h"
 #include "include/stdio.h"
 #include "include/timeAndDate.h"
 #include "include/string.h"
 #include "include/blobsFront.h"
+
+int main() {
+
+	initShell();
+
+	return 0;
+}
+
 void initShell() {
 
   clearScreen();
