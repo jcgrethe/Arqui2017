@@ -1,40 +1,32 @@
-int strcmp(const char * s1,const char *s2){
-	while(*s1 && *s2 && *s1 == *s2){
-		s1++;
-		s2++;
-	}
-	return *s1 - *s2;
-} 
-//devuelve 1 si son iguales, 0 sino
-int strncmp(const char * s1,const char *s2, int n){
-	int i;
-	int rta = 1;
-	for(i = 0; i < n && s1[i] != '\0' && s2[i] != '\0' ; i++){
-		if( s1[i] != s2[i])
-			rta = 0;
-	}
-	if(i == n)
-		return rta;
-	return 0;
-}
+#include "./types.h"
+#include "include/string.h"
 
-int strlengh(const char * s1){
-	int i = 0;
-	while(s1[i] != '\0')
-		i++;
-	return i;
+int strlen(const char* str) {
+  int length = 0;
+  while(*str != '\0') {
+    str++;
+    length++;
+  }
+  return length;
 }
-
-void strcat(char * s1, const char * s2){
-	int i = 0;
-	int j = 0;
-	while(s1[i] != '\0'){
-		i++;
+boolean isspace(char c){
+	if(c==' ')
+		return true;
+	return false;
+}
+boolean strcmp(char* s1,char* s2){
+	int x=0;
+	boolean flag=true;
+	while(s1[x]!=0 && s2[x]!=0 && flag==true){
+		if(s1[x]!=s2[x]){
+			flag=false;
+		}
+		x++;
 	}
-	while(s2[j] != '\0'){
-		s1[i] = s2[j];
-		i++;
-		j++;
+	if(flag==false)
+		return flag;
+	if(s1[x]==s2[x]){
+		return true;
 	}
-	s1[i] = '\0';
+	return false;
 }

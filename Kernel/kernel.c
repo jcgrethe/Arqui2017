@@ -21,6 +21,7 @@ extern unsigned int read();
 
 static void * const shell = (void*)0x400000;
 static void * const holaMundo = (void*)0x500000;
+static void * const blobsWar = (void*)0x600000;
 
 
 typedef int (*EntryPoint)();
@@ -43,6 +44,7 @@ void * initializeKernelBinary() {
 	void * moduleAddresses[] = {
 		shell,
 		holaMundo,
+		blobsWar,
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
@@ -73,38 +75,32 @@ int main() {
 	/* Execute UserLand, sampleCodeModule */
 	//printStringHex(((EntryPoint)sampleCodeModuleAddress)());
 
-	//uint8_t apagar = 0;
-	//char opcion;
+	uint8_t apagar = 0;
+	char opcion[20];
 
-
-
-/*
+	clear();
 	while(1){
-		printString("Elegir la opcion deseada:      1-Shell      2-Blobs War      0-Apagar");
 
-		readAllBuffer(&opcion, 1);
+		//printString("Elegir la opcion deseada:      1-Shell      2-Blobs War      0-Apagar");
 
-		if(opcion == '1')
-			((EntryPoint)sampleCodeModuleAddress)();
+		int i = 0;
+		while((opcion[i] = getBuffer()) != EOF && opcion[i] != '\n') {
+			i++;
+		}
+
+		if(opcion[0] == '1')
+			((EntryPoint)shell)();
 		else {
-			if(opcion == '2')
-				((EntryPoint)blobsWarModuleAddress)();
+			if(opcion[0] == '2')
+				((EntryPoint)holaMundo)();
 			else{
-				if(opcion == '0')
+				if(opcion[0] == '0')
 					apagar = 1;
 				else
 					printString("Opcion incorrecta");
 			}
 		}
 	}
- */
-
- 	int k = 0;
- 	while(k < 500) {
-		k++;
-	}
-
-	((EntryPoint)shell)();
 
 	return 0;
 }

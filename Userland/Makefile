@@ -2,7 +2,7 @@ include Makefile.inc
 
 SAMPLE_DATA=0001-sampleDataModule.bin
 
-all: sampleCodeModule sampleDataModule hola
+all: sampleCodeModule sampleDataModule hola blobsWarModule
 
 sampleCodeModule:
 	cd SampleCodeModule; make
@@ -12,6 +12,9 @@ sampleDataModule:
 
 hola:
 	cd holaMundo; make
+
+blobsWarModule:
+	cd blobsWarModule; make
 
 clean:
 	cd SampleCodeModule; make clean
