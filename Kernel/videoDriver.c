@@ -12,12 +12,13 @@ static byte * mouse=(byte*)0xB8001;
 static char screen[26*160];
 static byte * currentScreen=screen;
 static int mousescreen=1;
+
+
 void updateScreen(){
 	for (int i = 0; i < 25; i++) {
 		memcpy(video + i*80*2, screen + i*80*2, 80*2);
 	}
 }
-
 
 
 void printString(const char * string) {

@@ -76,30 +76,25 @@ int main() {
 	//printStringHex(((EntryPoint)sampleCodeModuleAddress)());
 
 	uint8_t apagar = 0;
-	char opcion[20];
-
-	clear();
+	char opcion='0';
 	while(1){
-
-		//printString("Elegir la opcion deseada:      1-Shell      2-Blobs War      0-Apagar");
-
 		int i = 0;
-		while((opcion[i] = getBuffer()) != EOF && opcion[i] != '\n') {
+		clear();
+		menu();
+		while((opcion = getBuffer()) == EOF || i<1) {
+			if(i==0){
+			}
 			i++;
 		}
-
-		if(opcion[0] == '1')
+		if(opcion == '1')
 			((EntryPoint)shell)();
-		else {
-			if(opcion[0] == '2')
+		else 
+			if(opcion == '2')
 				((EntryPoint)holaMundo)();
-			else{
-				if(opcion[0] == '0')
+			else
+				if(opcion == '0')
 					apagar = 1;
-				else
-					printString("Opcion incorrecta");
-			}
-		}
+									
 	}
 
 	return 0;
