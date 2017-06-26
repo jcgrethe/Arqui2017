@@ -12,7 +12,7 @@
 
 /*main*/
 
-int juego()
+int main()
 {
 	/*Declaraciones*/
 	 int flagComando=-1;			

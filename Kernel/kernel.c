@@ -21,7 +21,7 @@ extern unsigned int read();
 
 static void * const shell = (void*)0x400000;
 static void * const holaMundo = (void*)0x500000;
-static void * const blobsWar = (void*)0x600000;
+static void * const blobsWarModule = (void*)0x600000;
 
 
 typedef int (*EntryPoint)();
@@ -44,7 +44,7 @@ void * initializeKernelBinary() {
 	void * moduleAddresses[] = {
 		shell,
 		holaMundo,
-		blobsWar,
+		blobsWarModule,
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
@@ -82,19 +82,22 @@ int main() {
 		clear();
 		menu();
 		while((opcion = getBuffer()) == EOF || i<1) {
-			if(i==0){
-			}
 			i++;
 		}
-		if(opcion == '1')
-			((EntryPoint)shell)();
-		else 
-			if(opcion == '2')
+		
+		switch(opcion) {
+			case '1':
+				((EntryPoint)shell)();
+				break;
+
+			case '2':
 				((EntryPoint)holaMundo)();
-			else
-				if(opcion == '0')
-					apagar = 1;
-									
+				break;
+
+			case '3':
+				((EntryPoint)blobsWarModule)();
+				break;
+		}							
 	}
 
 	return 0;

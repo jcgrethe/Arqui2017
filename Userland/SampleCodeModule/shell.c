@@ -18,6 +18,7 @@ void initShell() {
   clearScreen();
   printf("Shell: ");
   newLine();
+	printf(" ");
   char buffer[25*80];
   int index=0;
   char c;
@@ -37,9 +38,11 @@ void initShell() {
       			newLine();
       			buffer[index]=0;
       			state=callfunction(buffer);
-				if(state!=0){
+				if(state == 1){
 					printf("Unknown command.");
 					newLine();
+				} else if(state == 2) {
+					return 0;
 				}
 				index=0;
 				buffer[0]=0;
@@ -94,11 +97,27 @@ int callfunction(char* buffer) {
 		 printf("Shell:" );
 		 return 0;
 	}
+	if(strcmp(function, "help")) {
+		printHelp(); 
+		return 0;
+	}
+	if(strcmp(function, "exit")) {
+		return 2;
+	}
 
 	return 1;
 }
 
 void echo(char * buffer){
 	printf(buffer);
+	newLine();
+}
+
+void printHelp() {
+	clearScreen();
+	printf("echo <message> - prints message\n");
+	printf("getTime - prints the current time and date\n");
+	printf("fontColor <color> - change the font color, ex: blue\n");
+	printf("BlobsWar - game\n");
 	newLine();
 }
