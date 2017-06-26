@@ -19,8 +19,10 @@ extern byte endOfKernel;
 static const qword PageSize = 0x1000;
 extern unsigned int read();
 
-static void * const sampleCodeModuleAddress = (void*)0x400000;
-static void * const sampleDataModuleAddress = (void*)0x500000;
+static void * const shell = (void*)0x400000;
+static void * const holaMundo = (void*)0x500000;
+static void * const blobsWarModule = (void*)0x600000;
+
 
 typedef int (*EntryPoint)();
 
@@ -40,8 +42,9 @@ void * initializeKernelBinary() {
 	
 
 	void * moduleAddresses[] = {
-		sampleCodeModuleAddress,
-		sampleDataModuleAddress
+		shell,
+		holaMundo,
+		blobsWarModule,
 	};
 
 	loadModules(&endOfKernelBinary, moduleAddresses);
@@ -52,9 +55,8 @@ void * initializeKernelBinary() {
 }
 
 int main() {
+	
 	cli();
-
-
 	set_up_mouse();	
 	set_up_IDT();
 	set_up_system_calls();
@@ -73,8 +75,30 @@ int main() {
 	/* Execute UserLand, sampleCodeModule */
 	//printStringHex(((EntryPoint)sampleCodeModuleAddress)());
 
+	uint8_t apagar = 0;
+	char opcion='0';
+	while(1){
+		int i = 0;
+		clear();
+		menu();
+		while((opcion = getBuffer()) == EOF || i<1) {
+			i++;
+		}
+		
+		switch(opcion) {
+			case '1':
+				((EntryPoint)shell)();
+				break;
 
-	((EntryPoint)sampleCodeModuleAddress)();
+			case '2':
+				((EntryPoint)holaMundo)();
+				break;
+
+			case '3':
+				((EntryPoint)blobsWarModule)();
+				break;
+		}							
+	}
 
 	return 0;
 }
