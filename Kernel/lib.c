@@ -48,3 +48,10 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 	return destination;
 }
+
+void menu(){
+	printChar('1');printChar(':');printChar(' ');printChar('S');printChar('H');printChar('E');printChar('L');printChar('L');newline();
+	printChar('2');printChar(':');printChar(' ');printChar('T');printChar('E');printChar('S');printChar('T');newline();
+	printChar('3');printChar(':');printChar(' ');printChar('T');printChar('P');printChar(' ');printChar('P');printChar('I');newline();
+		
+}
