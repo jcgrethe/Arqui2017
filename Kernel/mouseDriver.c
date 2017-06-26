@@ -26,8 +26,7 @@ extern dword read();
 void set_up_mouse(){
 
 	int8_t status;
-	//IRQ_OFF;
-	//mouse_pipe = make_pipe(sizeof(mouse_device_packet_t) * PACKETS_IN_PIPE);
+	
 	mWait(1);
 	outIO(MOUSE_STATUS, 0xA8);
 	mWait(1);

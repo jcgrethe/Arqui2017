@@ -62,19 +62,6 @@ int main() {
 	set_up_system_calls();
 	sti();
 
-	/*
-	while(1) {
-		int k = 0;
-		while(k < 1000*1000*20) {
-			k++;
-		}
-		
-	}
-	*/
-
-	/* Execute UserLand, sampleCodeModule */
-	//printStringHex(((EntryPoint)sampleCodeModuleAddress)());
-
 	uint8_t apagar = 0;
 	char opcion='0';
 	while(1){
