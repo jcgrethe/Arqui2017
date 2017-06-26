@@ -12,3 +12,8 @@
 ```
 
 ## More instructions when the OS is running
+
+## Collaborators
+* Varela, Catalina
+* Grethe, Juan Cruz
+* Clozza, Nicolás Agustín
