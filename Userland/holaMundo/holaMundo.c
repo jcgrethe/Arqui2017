@@ -3,7 +3,9 @@
 int main(void){
 	clearScreen();
 	printf("Hola mundo");
-	while(1) {
-		
+	int i=0;
+	while(i<500000000) {
+		i++;
 	}
+	return 0;
 }
