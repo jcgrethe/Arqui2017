@@ -6,13 +6,6 @@
 #include "include/string.h"
 #include "include/blobsFront.h"
 
-int main() {
-
-	initShell();
-
-	return 0;
-}
-
 void initShell() {
 
   clearScreen();

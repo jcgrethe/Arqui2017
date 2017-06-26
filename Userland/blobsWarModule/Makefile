@@ -15,7 +15,7 @@ COBJECTS=$(SOURCES:.c=.o)
 all: $(USER)
 
 $(USER): $(ASMOBJECTS) $(COBJECTS)
-	$(LD) -T sampleCodeModule.ld _loader.o $(COBJECTS) $(ASMOBJECTS) -o ../$(MODULE)
+	$(LD) -T blobsWarModule.ld _loader.o $(COBJECTS) $(ASMOBJECTS) -o ../$(MODULE)
 
 clean:
 	rm -rf *.o
