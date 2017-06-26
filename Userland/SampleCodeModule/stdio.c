@@ -96,6 +96,7 @@ void backspace() {
 void newLine(){
 	char c='\n';
 	int80(1, 0 , &c, 1 ,0, 0);
+	printf("Shell: ");
 }
 
 

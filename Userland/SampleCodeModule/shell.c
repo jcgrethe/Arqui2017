@@ -16,9 +16,7 @@ int main() {
 void initShell() {
 
   clearScreen();
-  printf("Shell: ");
-  newLine();
-	printf(" ");
+  printf("Shell:  ");
   char buffer[25*80];
   int index=0;
   char c;
